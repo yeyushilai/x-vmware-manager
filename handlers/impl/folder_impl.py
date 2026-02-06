@@ -2,8 +2,8 @@
 
 from log.logger import logger
 
-from resource_control.vmware_vsphere import VMwareVSphere
-from uutils.pg import VMwareManagerPGInterface
+from platforms.vmware_vsphere import VMwareVSphere
+from infra.pg import VMwareManagerPGInterface
 from error import (
     Error,
     ErrorMsg,

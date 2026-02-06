@@ -11,13 +11,8 @@ from api.return_tools import (
 from log.logger import logger
 # from local
 import connexion as connexion
-from constants import (
-    ACTION_VMWARE_MANAGER_HEALTH_CHECK_HEALTH,
-)
 from handlers.controllers.common import (
-    process_query_list_param,
-    validate_user_request,
-    build_params
+    process_query_list_param
 )
 from handlers.impl.health_impl import (
     handle_check_health_local,
@@ -38,16 +33,5 @@ def check_health(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-
-    action = ACTION_VMWARE_MANAGER_HEALTH_CHECK_HEALTH
-    kwargs.update({'action': action})
-
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_check_health_local(kwargs)

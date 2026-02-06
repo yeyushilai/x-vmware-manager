@@ -3,9 +3,9 @@
 from log.logger import logger
 from utils.misc import get_current_time
 
-from resource_control.vmware_vsphere import VMwareVSphere
-from uutils.pg import VMwareManagerPGInterface
-from uutils.common import generate_platform_id
+from platforms.vmware_vsphere import VMwareVSphere
+from infra.pg import VMwareManagerPGInterface
+from utils.common import generate_platform_id
 from error import (
     Error,
     ErrorMsg,

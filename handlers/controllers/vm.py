@@ -7,18 +7,8 @@ from api.return_tools import return_error
 from log.logger import logger
 # from local
 import connexion as connexion
-from constants import (
-    ACTION_VMWARE_MANAGER_VM_DESCRIBE_VM,
-    ACTION_VMWARE_MANAGER_VM_DETAIL_VM,
-    ACTION_VMWARE_MANAGER_VM_MONITOR_VM,
-    ACTION_VMWARE_MANAGER_VM_OPERATE_VM,
-    ACTION_VMWARE_MANAGER_VM_UPDATE_VM,
-    ACTION_VMWARE_MANAGER_VM_DETAIL_VM_TICKET
-)
 from handlers.controllers.common import (
-    process_query_list_param,
-    validate_user_request,
-    build_params
+    process_query_list_param
 )
 from handlers.impl.vm_impl import (
     handle_describe_vm_local,
@@ -45,16 +35,6 @@ def describe_vm(**kwargs):
             for k, v in six.iteritems(body):
                 kwargs[k] = v
 
-    action = ACTION_VMWARE_MANAGER_VM_DESCRIBE_VM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
-
     return handle_describe_vm_local(kwargs)
 
 
@@ -72,16 +52,6 @@ def detail_vm(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-
-    action = ACTION_VMWARE_MANAGER_VM_DETAIL_VM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_detail_vm_local(kwargs)
 
@@ -101,16 +71,6 @@ def monitor_vm(**kwargs):
             for k, v in six.iteritems(body):
                 kwargs[k] = v
 
-    action = ACTION_VMWARE_MANAGER_VM_MONITOR_VM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
-
     return handle_monitor_vm_local(kwargs)
 
 
@@ -128,16 +88,6 @@ def operate_vm(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-
-    action = ACTION_VMWARE_MANAGER_VM_OPERATE_VM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_operate_vm_local(kwargs)
 
@@ -157,16 +107,6 @@ def update_vm(**kwargs):
             for k, v in six.iteritems(body):
                 kwargs[k] = v
 
-    action = ACTION_VMWARE_MANAGER_VM_UPDATE_VM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
-
     return handle_update_vm_local(kwargs)
 
 
@@ -184,15 +124,5 @@ def detail_vm_ticket(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-
-    action = ACTION_VMWARE_MANAGER_VM_DETAIL_VM_TICKET
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_detail_vm_ticket_local(kwargs)

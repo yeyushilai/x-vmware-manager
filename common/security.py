@@ -5,11 +5,11 @@ import api.error_code as ErrorCodes
 import api.error_msg as ErrorMsg
 from log.logger import logger
 
-from resource_control.iaas.interface import (
+from platforms.iaas.interface import (
     get_user,
 )
 import context as context
-from resource_control.iaas.interface import get_access_key
+from platforms.iaas.interface import get_access_key
 from constants import ACCESS_KEY_STATUS_ACTIVE
 from common.auth import (
     SignatureAuthHandler,

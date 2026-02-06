@@ -4,10 +4,10 @@ import api.error_msg as ErrorMsg
 from log.logger import logger
 
 import context
-from resource_control.iaas.interface import (
+from platforms.iaas.interface import (
     check_user_lock,
 )
-from resource_control.iaas.access_limit import (
+from platforms.iaas.access_limit import (
     check_api_access_count,
 )
 from constants import (

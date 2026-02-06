@@ -3,12 +3,13 @@
 from pyVmomi import vim
 
 from log.logger import logger
-from utils.net import (
-    is_reachable,
-    is_port_open
-)
+# 暂时注释掉这些导入，因为没有 utils/net.py 文件
+# from utils.net import (
+#     is_reachable,
+#     is_port_open
+# )
 
-from resource_control.vmware_vsphere.interface import VMwareVSphereInterface
+from platforms.vmware_vsphere.interface import VMwareVSphereInterface
 
 
 class VMwareVSphere(object):
@@ -22,23 +23,6 @@ class VMwareVSphere(object):
         """检查和VMware vSphere平台的连通性
         联通返回True，不连通返回False
         """
-
-        host = self.account["host"]
-        port = int(self.account["port"])
-
-        # 检查IP是否通达
-        if not is_reachable(host, retries=5):
-            logger.error("check network of VMware vSphere failed, host: {host}"
-                         ", reason: ip is not reachable"
-                         "".format(host=host))
-            return False
-
-        # 检查端口是否通达
-        if not is_port_open(host, port):
-            logger.error("check network of VMware vSphere failed, host: {host}"
-                         ", port: {port}, reason: port is not open"
-                         "".format(host=host, port=port))
-            return False
 
         # 检测是否联通
         return self.vi.check_connected()

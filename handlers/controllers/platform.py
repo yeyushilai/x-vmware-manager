@@ -7,17 +7,8 @@ from api.return_tools import return_error
 from log.logger import logger
 # from local
 import connexion as connexion
-from constants import (
-    ACTION_VMWARE_MANAGER_PLATFORM_ADD_PLATFORM,
-    ACTION_VMWARE_MANAGER_PLATFORM_CHECK_PLATFORM_CONNECTIVITY,
-    ACTION_VMWARE_MANAGER_PLATFORM_DELETE_PLATFORM,
-    ACTION_VMWARE_MANAGER_PLATFORM_DESCRIBE_PLATFORM,
-    ACTION_VMWARE_MANAGER_PLATFORM_UPDATE_PLATFORM,
-)
 from handlers.controllers.common import (
-    process_query_list_param,
-    validate_user_request,
-    build_params
+    process_query_list_param
 )
 from handlers.impl.platform_impl import (
     handle_add_platform_local,
@@ -43,16 +34,6 @@ def check_platform_connectivity(**kwargs):
             for k, v in six.iteritems(body):
                 kwargs[k] = v
 
-    action = ACTION_VMWARE_MANAGER_PLATFORM_CHECK_PLATFORM_CONNECTIVITY
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
-
     return handle_check_platform_connectivity_local(kwargs)
 
 
@@ -71,16 +52,6 @@ def add_platform(**kwargs):
             for k, v in six.iteritems(body):
                 kwargs[k] = v
 
-    action = ACTION_VMWARE_MANAGER_PLATFORM_ADD_PLATFORM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
-
     return handle_add_platform_local(kwargs)
 
 
@@ -98,16 +69,6 @@ def delete_platform(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-    
-    action = ACTION_VMWARE_MANAGER_PLATFORM_DELETE_PLATFORM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_delete_platform_local(kwargs)
 
@@ -126,16 +87,6 @@ def describe_platform(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-    
-    action = ACTION_VMWARE_MANAGER_PLATFORM_DESCRIBE_PLATFORM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_describe_platform_local(kwargs)
 
@@ -154,15 +105,5 @@ def update_platform(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-    
-    action = ACTION_VMWARE_MANAGER_PLATFORM_UPDATE_PLATFORM
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_update_platform_local(kwargs)

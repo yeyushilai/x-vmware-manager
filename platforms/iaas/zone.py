@@ -5,7 +5,7 @@ from utils.thread_local import (
 )
 
 import context
-from resource_control.iaas.interface import get_all_zones
+from platforms.iaas.interface import get_all_zones
 
 g_region_zones = None
 

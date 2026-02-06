@@ -5,7 +5,7 @@ from constants import (
     API_DURATION,
     MC_KEY_MAP,
 )
-from resource_control.iaas.interface import (
+from platforms.iaas.interface import (
     get_account_quota,
 )
 

@@ -111,8 +111,8 @@ class RestyResolver(Resolver):
                 name = x_router_controller
 
             elif resource_name:
-                resource_controller_name = resource_name.replace('-', '_')
-                name += '.' + resource_controller_name
+                platformsler_name = resource_name.replace('-', '_')
+                name += '.' + platformsler_name
 
             return name
 

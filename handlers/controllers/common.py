@@ -23,10 +23,7 @@ from constants import (
     ROLE_NORMAL_USER,
     API_TYPE_VMWARE_MANAGER,
 )
-from resource_control.iaas.api_access import (
-    check_user_access,
-    check_api_access_control
-)
+
 
 
 def _get_sender(user):

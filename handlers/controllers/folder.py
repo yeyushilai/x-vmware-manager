@@ -7,14 +7,8 @@ from api.return_tools import return_error
 from log.logger import logger
 # from local
 import connexion as connexion
-from constants import (
-    ACTION_VMWARE_MANAGER_FOLDER_DETAIL_FOLDER,
-    ACTION_VMWARE_MANAGER_FOLDER_DETAIL_ROOT_FOLDER
-)
 from handlers.controllers.common import (
-    process_query_list_param,
-    validate_user_request,
-    build_params
+    process_query_list_param
 )
 from handlers.impl.folder_impl import (
     handle_detail_folder_local,
@@ -36,16 +30,6 @@ def detail_folder(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-    
-    action = ACTION_VMWARE_MANAGER_FOLDER_DETAIL_FOLDER
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_detail_folder_local(kwargs)
 
@@ -64,15 +48,5 @@ def detail_root_folder(**kwargs):
         if body:
             for k, v in six.iteritems(body):
                 kwargs[k] = v
-
-    action = ACTION_VMWARE_MANAGER_FOLDER_DETAIL_ROOT_FOLDER
-    kwargs.update({'action': action})
-    valid_user, error = validate_user_request(kwargs,
-                                              connexion.request)
-    if not valid_user:
-        return return_error(kwargs, error, dump=False)
-
-    # build_params
-    kwargs = build_params(valid_user, kwargs, connexion.request)
 
     return handle_detail_root_folder_local(kwargs)
