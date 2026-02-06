@@ -9,14 +9,14 @@ VMware Manager 是一个 VMware vSphere 平台纳管工具，工具提供了一�
 - **虚拟机管理**：获取虚拟机列表、查询详细信息、更新虚拟机配置
 - **虚拟机操作**：开机、关机、重启等操作
 - **虚拟机监控**：获取虚拟机性能指标
-- **平台管理**：连接和管理VMware vSphere平台
+- **平台管理**：连接和管理 VMware vSphere 平台
 - **票据管理**：获取虚拟机远程控制台票据
 
 ## 系统架构
 
 - **Web服务层**：基于 Flask 和 Connexion 的 RESTful API 服务
 - **业务逻辑层**：处理具体的业务逻辑，如虚拟机操作、监控等
-- **平台对接层**：与VMware vSphere平台进行交互
+- **平台对接层**：与 VMware vSphere 平台进行交互
 - **数据存储层**：存储平台配置信息
 
 ## 目录结构
@@ -24,12 +24,12 @@ VMware Manager 是一个 VMware vSphere 平台纳管工具，工具提供了一�
 ```
 vmware-manager/
 ├── handlers/            # 处理程序目录
-│   ├── controllers/     # 控制器，处理HTTP请求
+│   ├── controllers/     # 控制器，处理 HTTP 请求
 │   ├── impl/            # 实现类，处理业务逻辑
-│   └── api_acl/         # API访问控制
-├── platforms/           # 平台对接目录（原platforms）
+│   └── api_acl/         # API 访问控制
+├── platforms/           # 平台对接目录
 │   ├── iaas/            # IaaS相关功能
-│   └── vmware_vsphere/  # VMware vSphere平台对接
+│   └── vmware_vsphere/  # VMware vSphere 平台对接
 ├── common/              # 通用工具类
 ├── connexion/           # API框架
 ├── utils/               # 工具类
