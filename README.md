@@ -44,14 +44,34 @@ vmware-manager/
 ### 环境要求
 
 - Python 3.6+
+- uv 管理工具
 - VMware vSphere API SDK
-- Flask
-- Connexion
+
+### 安装 uv 管理工具
+
+```bash
+# 使用 pip 安装 uv
+pip install uv
+
+# 或者使用官方推荐的安装方式
+# curl -Ls https://astral.sh/uv/install.sh | sh
+```
+
+### 初始化虚拟环境
+
+```bash
+# 在项目根目录下初始化虚拟环境
+uv venv
+```
 
 ### 安装依赖
 
 ```bash
-pip install -r requirements.txt
+# 使用 uv 安装依赖
+uv pip install -e .
+
+# 或者手动安装依赖
+uv pip install Flask Connexion pyVmomi Flask-Cors
 ```
 
 ### 配置文件
@@ -61,7 +81,11 @@ pip install -r requirements.txt
 ### 启动服务
 
 ```bash
-python vmware_manager_server.py
+# 激活虚拟环境并启动服务
+uv run python vmware_manager_server.py
+
+# 或者直接使用 uv run 运行
+uv run python vmware_manager_server.py
 ```
 
 服务将在`http://localhost:8888`启动。
@@ -92,13 +116,6 @@ python vmware_manager_server.py
 - **handlers/impl/**：实现类文件，包含具体的业务逻辑
 - **platforms/vmware_vsphere/**：VMware vSphere 平台对接实现
 
-### 新增功能
-
-1. 在`handlers/controllers/`目录下创建或修改控制器文件
-2. 在`handlers/impl/`目录下实现具体的业务逻辑
-3. 在`platforms/vmware_vsphere/`目录下添加平台对接代码
-4. 更新API文档
-
 ### 日志管理
 
 项目使用Python标准日志模块，日志级别可在配置文件中设置。推荐使用以下日志级别：
@@ -121,3 +138,30 @@ python vmware_manager_server.py
 ## 联系方式
 
 如有问题或建议，请联系项目维护人员。
+
+## 提交 Issue
+
+如果您在使用过程中遇到问题，或有新的功能建议，欢迎在 GitHub 上提交 Issue：
+
+1. 访问项目的 GitHub 仓库页面
+2. 点击 "Issues" 选项卡
+3. 点击 "New issue" 按钮
+4. 选择适当的 issue 模板（如果有）
+5. 填写 issue 标题和详细描述
+6. 点击 "Submit new issue" 按钮提交
+
+### Issue 提交建议
+
+- **问题报告**：
+  - 描述您遇到的具体问题
+  - 提供重现步骤
+  - 说明您期望的行为
+  - 附上相关的错误信息或日志
+  - 注明您的环境信息（Python 版本、操作系统等）
+
+- **功能请求**：
+  - 描述您希望添加的功能
+  - 说明为什么这个功能是有用的
+  - 如有可能，提供功能实现的建议
+
+我们会定期查看并处理提交的 Issue，感谢您对项目的贡献！
