@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-VMware Manager是一个VMware vSphere平台纳管工具，工具提供了一系列API接口，用于获取虚拟机列表、查询详细信息、监控虚拟机状态、执行虚拟机操作、更新虚拟机信息以及获取虚拟机票据等功能。
+VMware Manager 是一个 VMware vSphere 平台纳管工具，工具提供了一系列 API 接口，用于获取虚拟机列表、查询详细信息、监控虚拟机状态、执行虚拟机操作、更新虚拟机信息以及获取虚拟机票据等功能。
 
 ## 功能特性
 
@@ -14,7 +14,7 @@ VMware Manager是一个VMware vSphere平台纳管工具，工具提供了一系�
 
 ## 系统架构
 
-- **Web服务层**：基于Flask和Connexion的RESTful API服务
+- **Web服务层**：基于 Flask 和 Connexion 的 RESTful API 服务
 - **业务逻辑层**：处理具体的业务逻辑，如虚拟机操作、监控等
 - **平台对接层**：与VMware vSphere平台进行交互
 - **数据存储层**：存储平台配置信息
@@ -90,7 +90,7 @@ python vmware_manager_server.py
 
 - **handlers/controllers/**：控制器文件，处理HTTP请求，调用实现类
 - **handlers/impl/**：实现类文件，包含具体的业务逻辑
-- **platforms/vmware_vsphere/**：VMware vSphere平台对接实现
+- **platforms/vmware_vsphere/**：VMware vSphere 平台对接实现
 
 ### 新增功能
 
@@ -110,8 +110,8 @@ python vmware_manager_server.py
 ## 注意事项
 
 1. 本项目已移除权限校验和身份验证代码，仅保留核心功能
-2. 使用前请确保已正确配置VMware vSphere平台连接信息
-3. 部分操作（如重启、关机）需要虚拟机安装并运行VMware Tools
+2. 使用前请确保已正确配置 VMware vSphere 平台连接信息
+3. 部分操作（如重启、关机）需要虚拟机安装并运行 VMware Tools
 4. 获取虚拟机票据时，虚拟机必须处于开机状态
 
 ## 许可证
