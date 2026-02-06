@@ -57,38 +57,107 @@ pip install uv
 # curl -Ls https://astral.sh/uv/install.sh | sh
 ```
 
-### 初始化虚拟环境
+### 初始化项目
 
-```bash
-# 在项目根目录下初始化虚拟环境
-uv venv
-```
+1. **克隆项目仓库**
+   ```bash
+   git clone <repository-url>
+   cd vmware-manager
+   ```
 
-### 安装依赖
+2. **初始化虚拟环境**
+   ```bash
+   # 创建 .venv 虚拟环境目录
+   uv venv
+   ```
 
-```bash
-# 使用 uv 安装依赖
-uv pip install -e .
+3. **安装依赖**
+   ```bash
+   # 使用 uv 安装依赖并生成 uv.lock 文件
+   uv pip install -e .
+   ```
 
-# 或者手动安装依赖
-uv pip install Flask Connexion pyVmomi Flask-Cors
-```
+4. **验证安装**
+   ```bash
+   # 查看已安装的依赖
+   uv pip list
+   ```
 
-### 配置文件
+### 项目配置文件
 
 在`/etc/pitrix`目录下创建`vmware_manager_server.yaml`配置文件，配置数据库连接、Zookeeper连接等信息。
 
 ### 启动服务
 
 ```bash
-# 激活虚拟环境并启动服务
-uv run python vmware_manager_server.py
-
-# 或者直接使用 uv run 运行
+# 使用 uv run 启动服务
 uv run python vmware_manager_server.py
 ```
 
 服务将在`http://localhost:8888`启动。
+
+### 依赖管理
+
+#### 添加新依赖
+```bash
+# 添加新依赖并更新 uv.lock 文件
+uv pip install <package-name>
+```
+
+#### 移除依赖
+```bash
+# 移除依赖并更新 uv.lock 文件
+uv pip uninstall <package-name>
+```
+
+#### 从 uv.lock 文件安装依赖
+```bash
+# 确保虚拟环境存在
+uv venv
+
+# 从 uv.lock 文件安装依赖
+uv pip sync
+```
+
+### 项目文件说明
+
+- **pyproject.toml**：项目配置文件，包含项目依赖和 uv 配置
+- **uv.lock**：依赖版本锁定文件，确保依赖版本的一致性
+- **.venv/**：虚拟环境目录，包含项目依赖
+- **.python-version**：指定项目使用的 Python 版本
+
+### 开发流程
+
+1. **创建分支**
+   ```bash
+   git checkout -b feature/<feature-name>
+   ```
+
+2. **开发功能**
+   - 实现新功能
+   - 编写代码
+
+3. **安装依赖**（如果添加了新依赖）
+   ```bash
+   uv pip install <package-name>
+   ```
+
+4. **运行服务**
+   ```bash
+   uv run python vmware_manager_server.py
+   ```
+
+5. **提交代码**
+   ```bash
+   git add .
+   git commit -m "Add <feature-name>"
+   git push origin feature/<feature-name>
+   ```
+
+6. **创建 Pull Request**
+   - 在 GitHub 上创建 Pull Request
+   - 等待代码审查
+   - 合并代码到主分支
 
 ## API文档
 
@@ -116,20 +185,11 @@ uv run python vmware_manager_server.py
 - **handlers/impl/**：实现类文件，包含具体的业务逻辑
 - **platforms/vmware_vsphere/**：VMware vSphere 平台对接实现
 
-### 日志管理
-
-项目使用Python标准日志模块，日志级别可在配置文件中设置。推荐使用以下日志级别：
-- **DEBUG**：详细的调试信息
-- **INFO**：重要的信息
-- **ERROR**：错误信息
-- **EXCEPTION**：异常信息
-
 ## 注意事项
 
-1. 本项目已移除权限校验和身份验证代码，仅保留核心功能
-2. 使用前请确保已正确配置 VMware vSphere 平台连接信息
-3. 部分操作（如重启、关机）需要虚拟机安装并运行 VMware Tools
-4. 获取虚拟机票据时，虚拟机必须处于开机状态
+1. 使用前请确保已正确配置 VMware vSphere 平台连接信息
+2. 部分操作（如重启、关机）需要虚拟机安装并运行 VMware Tools
+3. 获取虚拟机票据时，虚拟机必须处于开机状态
 
 ## 许可证
 

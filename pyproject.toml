@@ -5,14 +5,13 @@ description = "VMware vSphere platform management tool"
 authors = [
     { name = "Developer", email = "developer@example.com" }
 ]
-license = { file = "LICENSE" }
+license = "MIT"
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.11"
 dependencies = [
     "Flask",
     "Connexion",
@@ -24,5 +23,5 @@ dependencies = [
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.uv]
-python-version = "3.6"  # 可根据实际需要调整
+[tool.setuptools]
+packages = []
