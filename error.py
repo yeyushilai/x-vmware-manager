@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
-from api.constants import (
-    EN,
-    ZH_CN,
-    DEFAULT_LANG,
-    SUPPORTED_LANGS
-)
 
 
 class Error(object):

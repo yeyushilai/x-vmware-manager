@@ -13,10 +13,10 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "Flask",
-    "Connexion",
+    "FastAPI",
+    "uvicorn[standard]",
     "pyVmomi",
-    "Flask-Cors"
+    "loguru"
 ]
 
 [build-system]
