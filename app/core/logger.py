@@ -8,22 +8,27 @@ import os
 from loguru import logger
 
 # 确保日志目录存在
-log_dir = 'log'
+log_dir = 'logs'
 os.makedirs(log_dir, exist_ok=True)
 
-# 配置日志
+# 移除默认的控制台处理器，避免重复输出
+logger.remove()
+
+# 配置日志输出到文件
 logger.add(
     os.path.join(log_dir, 'vmware-manager_{time}.log'),
     rotation='1 day',
     retention='7 days',
     compression='zip',
-    level='INFO'
+    level='INFO',
+    enqueue=True
 )
 
-# 同时输出到控制台
+# 配置日志输出到控制台
 logger.add(
     sink=lambda msg: print(msg, end=""),
-    level='DEBUG'
+    level='DEBUG',
+    enqueue=True
 )
 
 # 导出logger实例

@@ -144,7 +144,7 @@ Common error codes:
 
 ## Log Management
 
-The project uses loguru for log management. Log files are saved in the `log/` directory, rotated daily by default, and retained for 7 days.
+The project uses loguru for log management. Log files are saved in the `logs/` directory, rotated daily by default, and retained for 7 days.
 
 ## Deployment Recommendations
 
