@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import typing
+from typing import Callable, Any
 
 from multiprocessing import Manager, Pool, Process, SimpleQueue
 
@@ -29,9 +29,9 @@ class Multi:
 
     def __init__(
             self,
-            producer_func: typing.Callable,
-            consumer_func: typing.Callable,
-            producer_args: typing.List[tuple],
+            producer_func: Callable,
+            consumer_func: Callable,
+            producer_args: list[tuple[Any, ...]],
             producer_num: int = 1,
             consumer_num: int = 1,
             jobs_limit: int = 0,
@@ -58,12 +58,12 @@ class Multi:
         self.sign_q = SimpleQueue()
 
         self.producer = Pool(producer_num)
-        self.consumer = []
+        self.consumer: list[Process] = []
         self.consumer_num = consumer_num
 
         self.debug = debug
 
-    def create_jobs(self):
+    def create_jobs(self) -> None:
         self.sign_q.put(1)
         for i, args in enumerate(self.producer_args):
             self.producer.apply_async(
@@ -71,16 +71,16 @@ class Multi:
             )
 
     @staticmethod
-    def create_job(jobs_q, produce_func, args, i):
+    def create_job(jobs_q: Any, produce_func: Callable, args: tuple[Any, ...], i: int) -> None:
         res = produce_func(*args)
         jobs_q.put([i, res])
 
-    def producer_join(self):
+    def producer_join(self) -> None:
         self.producer.close()
         self.producer.join()
         self.sign_q.get()
 
-    def consume_jobs(self, func):
+    def consume_jobs(self, func: Callable) -> None:
         while not (self.sign_q.empty() and self.jobs_q.empty()):
             if self.jobs_q.empty():
                 continue
@@ -91,7 +91,7 @@ class Multi:
 
             func(job)
 
-    def start_cunsome(self):
+    def start_cunsome(self) -> None:
         for _ in range(self.consumer_num):
             p = Process(target=self.consume_jobs, args=(self.consumer_func,))
             self.consumer.append(p)
@@ -99,11 +99,11 @@ class Multi:
         for c in self.consumer:
             c.start()
 
-    def consumer_join(self):
+    def consumer_join(self) -> None:
         for c in self.consumer:
             c.join()
 
-    def run(self):
+    def run(self) -> None:
         self.create_jobs()
         self.start_cunsome()
         self.producer_join()

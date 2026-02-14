@@ -7,7 +7,7 @@ import sys
 class SystemTool:
 
     @classmethod
-    def get_python_version(cls):
+    def get_python_version(cls) -> sys.version_info:
         return sys.version_info
 
 

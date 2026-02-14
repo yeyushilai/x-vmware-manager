@@ -7,7 +7,7 @@ from email_validator import validate_email, EmailNotValidError
 class DailyEntityTool:
 
     @classmethod
-    def is_email_valid(cls, value):
+    def is_email_valid(cls, value: str) -> bool:
         """ 检查是否为邮箱地址 """
         try:
             validate_email(value)

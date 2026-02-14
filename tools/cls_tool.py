@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
+from typing import Any
+
+
 class ComplexObject:
     """
     这个类主要用于封装复杂的数据结构。
@@ -22,24 +25,24 @@ class ComplexObject:
         我们必须在子类中也定义__slots__，这样，子类允许定义的属性就是自身的__slots__加上父类的__slots__
     """
 
-    __slots__ = tuple()
+    __slots__: tuple = tuple()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super(ComplexObject, self).__init__()
         # 把__slots__里的属性都初始化为None
         for attr in self.__slots__:
             setattr(self, attr, None)
 
-    def __str__(self):
-        result_str = ""
+    def __str__(self) -> str:
+        result_str: str = ""
         for attr in self.__slots__:
-            item = getattr(self, attr)
+            item: Any = getattr(self, attr)
             if (
                     isinstance(item, list)
                     or isinstance(item, tuple)
                     or isinstance(item, set)
             ):
-                temp_str = ",".join(str(getattr(_, "id", "-")) for _ in item)
+                temp_str: str = ",".join(str(getattr(_, "id", "-")) for _ in item)
             elif isinstance(item, dict):
                 temp_str = ",".join(str(_) for _ in item)
             else:
@@ -50,9 +53,9 @@ class ComplexObject:
 
 class ClassSyntax:
 
-    def __new__(cls):
+    def __new__(cls) -> None:
         # 禁止实例化
-        raise
+        raise Exception
 
 
 if __name__ == '__main__':

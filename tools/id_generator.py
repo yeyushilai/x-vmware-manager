@@ -9,12 +9,12 @@ import random
 class IDGenerator:
 
     @classmethod
-    def gen_uuid(cls):
+    def gen_uuid(cls) -> str:
         new_uuid = uuid.uuid4()
         return str(new_uuid)
 
     @classmethod
-    def gen_timestamp_id(cls):
+    def gen_timestamp_id(cls) -> int:
         return int(time.time() * 1000000) + random.randint(1000, 9999)
 
 

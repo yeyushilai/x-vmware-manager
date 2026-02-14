@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import itertools
+from typing import Any, Iterable, Generator
 
 
 class StructureDataTool:
 
     @classmethod
-    def multi_assign_attr_to_obj(cls, instance_obj, **kwargs):
+    def multi_assign_attr_to_obj(cls, instance_obj: Any, **kwargs: Any) -> Any:
         """ 批量给对象赋值 """
         assert isinstance(kwargs, dict)
         assert isinstance(instance_obj, object)
@@ -18,7 +19,7 @@ class StructureDataTool:
         return instance_obj
 
     @classmethod
-    def chunked(cls, it, n):
+    def chunked(cls, it: Iterable[Any], n: int) -> Generator[list[Any], None, None]:
         """ 手动分页 """
         marker = object()
         for group in (list(g) for g in itertools.zip_longest(
@@ -28,7 +29,7 @@ class StructureDataTool:
             yield group
 
     @classmethod
-    def order_list_and_paginate(cls, target_list, sort_key, offset, limit, reverse=False):
+    def order_list_and_paginate(cls, target_list: list[dict[str, Any]], sort_key: str, offset: int, limit: int, reverse: bool = False) -> tuple[list[dict[str, Any]], int]:
         """ 分页 """
         length = len(target_list)
         if length == 0:

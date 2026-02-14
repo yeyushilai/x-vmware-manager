@@ -4,11 +4,12 @@
 import os
 import zipfile
 import py7zr
+from typing import Optional, Any
 
 
 class ZipExtractor:
     @classmethod
-    def extract_zip(cls, zip_file_path, extract_folder):
+    def extract_zip(cls, zip_file_path: str, extract_folder: str) -> None:
         # 创建解压目录
         if not os.path.exists(extract_folder):
             os.makedirs(extract_folder)
@@ -21,24 +22,24 @@ class ZipExtractor:
 
 class SevenZipExtractor:
 
-    filters = [
+    filters: list[dict[str, Any]] = [
         {
             'id': py7zr.FILTER_LZMA2,
             'options': {'dict_size': 65536, 'lc': 3, 'lp': 0, 'pb': 2}
         },
     ]
 
-    def __init__(self, archive_path, password=None):
-        self.archive_path = archive_path
-        self.password = password
+    def __init__(self, archive_path: str, password: Optional[str] = None) -> None:
+        self.archive_path: str = archive_path
+        self.password: Optional[str] = password
 
-    def extract_all(self, output_path=".", create_subfolder=True):
+    def extract_all(self, output_path: str = ".", create_subfolder: bool = True) -> Optional[str]:
         if not os.path.exists(output_path):
             os.makedirs(output_path)
 
         with py7zr.SevenZipFile(self.archive_path, mode='r', password=self.password, filters=self.filters) as archive:
             if create_subfolder:
-                base_name = archive.getnames()[0].split("/")[0]
+                base_name: str = archive.getnames()[0].split("/")[0]
                 output_path = f"{output_path}/{base_name}"
 
             archive.extractall(output_path)

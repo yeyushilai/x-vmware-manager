@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import typing
 import time
 import redis as redis_db
+from typing import Callable, Optional, Any
 
 pool_db0 = redis_db.ConnectionPool(host="", port=0, password="", db=0)
 redis = redis_db.StrictRedis(connection_pool=pool_db0)
@@ -14,12 +14,12 @@ class MRedisLock:
     批量分布式锁，也可用于单条数据加锁
     """
 
-    def __init__(self, prefix, err_msg, ex):
+    def __init__(self, prefix: str, err_msg: str, ex: int) -> None:
         self.prefix = prefix
         self.err_msg = err_msg
         self.ex = ex
 
-    def m_acquire(self, suffix_ls: typing.List[str]):
+    def m_acquire(self, suffix_ls: list[str]) -> tuple[bool, str]:
         """
         批量抢锁，一个失败则全失败，全部成功才成功
         失败时会通过判断过期时间做二次抢锁，避免因为宕机导致无法释放锁
@@ -27,7 +27,7 @@ class MRedisLock:
         if not suffix_ls:
             return True, ""
         curr_time = int(time.time())
-        mapping = {f'{str(self.prefix)}:{suffix}': curr_time for suffix in suffix_ls}
+        mapping: dict[str, int] = {f'{str(self.prefix)}:{suffix}': curr_time for suffix in suffix_ls}
         if not redis.msetnx(**mapping):
             # 抢锁失败时，尝试通过时间解锁，成功解锁时重新执行
             ex_release = False
@@ -55,7 +55,7 @@ class MRedisLock:
             return True
         return False
 
-    def release(self, suffix_ls: typing.List[str]):
+    def release(self, suffix_ls: list[str]) -> None:
         """
         手动释放锁
         """
@@ -73,12 +73,12 @@ class RedisLock:
     :param lock_period: int, 占锁时间
     """
 
-    def __init__(self, key_prefix, error_message, lock_period):
+    def __init__(self, key_prefix: str, error_message: str, lock_period: int) -> None:
         self.key_prefix = key_prefix
         self.error_message = error_message
         self.lock_period = lock_period
 
-    def acquire(self, key_suffix):
+    def acquire(self, key_suffix: str) -> tuple[bool, str]:
         """抢锁, 如果抢锁失败返回对应的报错信息
 
         :param key_suffix: 加锁后缀, 传递给单例的参数
@@ -91,11 +91,11 @@ class RedisLock:
             return False, self.error_message
         return True, ""
 
-    def release(self, key_suffix):
+    def release(self, key_suffix: str) -> None:
         """ 手动释放锁 """
         redis.delete(str(self.key_prefix) + ":" + str(key_suffix))
 
-    def check(self, key_suffix):
+    def check(self, key_suffix: str) -> bool:
         """检查当前是否有锁（不抢锁），如果锁被占用，返回True，否则返回False"""
         key = str(self.key_prefix) + ":" + str(key_suffix)
         if redis.get(key):

@@ -9,6 +9,7 @@ import socket
 import subprocess
 import netaddr
 import struct
+from typing import Optional, Any, Tuple
 
 from scapy.layers.l2 import Ether, ARP
 from scapy.sendrecv import srp
@@ -17,7 +18,7 @@ from scapy.sendrecv import srp
 class NetTool:
 
     @classmethod
-    def is_valid_ip(cls, ip_addr):
+    def is_valid_ip(cls, ip_addr: str) -> bool:
         """ 检查IP地址是否合法 """
         try:
             netaddr.IPAddress(ip_addr, flags=1)
@@ -26,7 +27,7 @@ class NetTool:
         return True
 
     @classmethod
-    def is_valid_mac(cls, mac_addr):
+    def is_valid_mac(cls, mac_addr: str) -> bool:
         """ 检查MAC地址是否合法 """
         try:
             if re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac_addr.lower()):
@@ -36,7 +37,7 @@ class NetTool:
         return False
 
     @classmethod
-    def is_ip_reachable(cls, ip, retries=5):
+    def is_ip_reachable(cls, ip: str, retries: int = 5) -> bool:
         """ 检查IP地址是否通达"""
         retries = retries
         while retries > 0:
@@ -48,7 +49,7 @@ class NetTool:
         return False
 
     @classmethod
-    def is_ip_port_reachable(cls, ip, port):
+    def is_ip_port_reachable(cls, ip: str, port: int) -> bool:
         """ 检查IP地址和端口号是否通达"""
         if not os.path.exists("/bin/nc"):
             return False
@@ -58,7 +59,7 @@ class NetTool:
         return False
 
     @classmethod
-    def is_ip_network(cls, network):
+    def is_ip_network(cls, network: Any) -> bool:
         n = network
         if not isinstance(n, (netaddr.IPNetwork, netaddr.IPAddress)):
             n = cls.get_ip_network(network)
@@ -66,7 +67,7 @@ class NetTool:
         return getattr(n, "version", None) == 4
 
     @classmethod
-    def is_ipv6_network(cls, network):
+    def is_ipv6_network(cls, network: Any) -> bool:
         n = network
         if not isinstance(n, (netaddr.IPNetwork, netaddr.IPAddress)):
             n = cls.get_ip_network(network)
@@ -74,23 +75,23 @@ class NetTool:
         return getattr(n, "version", None) == 6
 
     @classmethod
-    def get_hostname(cls):
+    def get_hostname(cls) -> str:
         """获取主机名称"""
         return socket.gethostname()
 
     @classmethod
-    def get_ip_address(cls):
+    def get_ip_address(cls) -> str:
         host_name = cls.get_hostname()
         return socket.gethostbyname(host_name)
 
     @classmethod
-    def get_hostname_by_ip(cls, ip):
+    def get_hostname_by_ip(cls, ip: str) -> Optional[str]:
         """ 根据IP地址获取主机名称 """
         try:
             socket.setdefaulttimeout(3)
             names = socket.gethostbyaddr(ip)
             for _name in names:
-                name = None
+                name: Optional[str] = None
                 if isinstance(_name, str):
                     name = _name
                 elif isinstance(_name, list):
@@ -110,7 +111,7 @@ class NetTool:
         return None
 
     @classmethod
-    def get_ip_network(cls, network, suppress_error=False):
+    def get_ip_network(cls, network: str, suppress_error: bool = False) -> Optional[netaddr.IPNetwork]:
         """ 获取 IP Network """
         try:
             ip_network = netaddr.IPNetwork(network)
@@ -121,7 +122,7 @@ class NetTool:
             return None
 
     @classmethod
-    def get_ip_by_if_name(cls, if_name="eth0"):
+    def get_ip_by_if_name(cls, if_name: str = "eth0") -> str:
         """ 获取当前主机指定网卡的IP地址 """
         import fcntl
         try:
@@ -138,7 +139,7 @@ class NetTool:
             return 'UNKNOWN'
 
     @classmethod
-    def get_ip_by_hostname(cls, hostname, suppress_warning=False, default=None):
+    def get_ip_by_hostname(cls, hostname: str, suppress_warning: bool = False, default: Optional[str] = None) -> str:
         """ 根据主机名称获取IP地址 """
         try:
             socket.setdefaulttimeout(3)
@@ -155,7 +156,7 @@ class NetTool:
         return ip
 
     @classmethod
-    def get_mac_address(cls, ip_address):
+    def get_mac_address(cls, ip_address: str) -> Optional[str]:
         # 创建ARP请求包
         arp_request = Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst=ip_address)
         # 发送ARP请求并接收响应
@@ -165,12 +166,12 @@ class NetTool:
             return mac_address
 
     @classmethod
-    def ignore_ssl(cls):
+    def ignore_ssl(cls) -> None:
         import ssl
         ssl._create_default_https_context = ssl._create_unverified_context
 
     @classmethod
-    def normal_exec(cls, args, timeout=60):
+    def normal_exec(cls, args: str, timeout: int = 60) -> Optional[Tuple[int, bytes, bytes]]:
         start_time = datetime.datetime.now()
         pipe = subprocess.Popen(args,
                                 stdout=subprocess.PIPE,

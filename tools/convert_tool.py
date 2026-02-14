@@ -6,12 +6,13 @@ import xmltodict
 
 from yaml import load, dump
 from yaml import Loader, Dumper
+from typing import Any, Optional
 
 
 class ConvertTool:
 
     @classmethod
-    def xml_file_to_json_file(cls, xml_file, json_file):
+    def xml_file_to_json_file(cls, xml_file: str, json_file: str) -> Optional[dict[str, Any]]:
         """ 将xml格式文件转为json格式文件（python对象） """
         with open(xml_file, mode="r") as f, open(json_file, "w") as f1:
             order_dict = xmltodict.parse(f.read(), encoding="utf-8")
@@ -21,13 +22,13 @@ class ConvertTool:
             return common_dict
 
     @classmethod
-    def xml_data_to_json_data(cls, xml_data):
+    def xml_data_to_json_data(cls, xml_data: str) -> dict[str, Any]:
         """ 将xml格式数据转为json格式数据 """
         order_dict = xmltodict.parse(xml_data, encoding="utf-8")
         return json.loads(json.dumps(order_dict, ensure_ascii=False))
 
     @classmethod
-    def yaml_dump(cls, obj):
+    def yaml_dump(cls, obj: Any) -> Optional[str]:
         """ 将json格式数据（python对象）转换为yaml格式数据 """
 
         try:
@@ -38,7 +39,7 @@ class ConvertTool:
         return output
 
     @classmethod
-    def yaml_load(stream):
+    def yaml_load(cls, stream: str) -> Optional[Any]:
         """ 将yaml格式数据转换为json格式数据（python对象） """
 
         try:
@@ -49,7 +50,7 @@ class ConvertTool:
         return obj
 
     @classmethod
-    def float_to_int(cls, value):
+    def float_to_int(cls, value: float | int | str) -> int:
         try:
             int_value = int(value)
         except:
@@ -57,7 +58,7 @@ class ConvertTool:
         return int_value
 
     @classmethod
-    def dict_to_obj(cls, raw_dict):
+    def dict_to_obj(cls, raw_dict: dict[str, Any]) -> Any:
         """ 字典转对象 """
         class Dict(dict):
             __setattr__ = dict.__setitem__
@@ -72,7 +73,7 @@ class ConvertTool:
         return dt_obj
 
     @classmethod
-    def obj_to_dict(cls, dict_obj):
+    def obj_to_dict(cls, dict_obj: Any) -> dict[str, Any]:
         """ 对象转字典
             方法待确认
         """

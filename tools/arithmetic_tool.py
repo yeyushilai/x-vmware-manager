@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Optional
 
 
 class ArithmeticTool:
 
     @classmethod
-    def safe_division(cls, numerator, denominator):
+    def safe_division(cls, numerator: float, denominator: float) -> float:
         """ 安全的除法 """
         return numerator / denominator if denominator else 0
 
     @classmethod
-    def round_half_up(cls, number, ndigits: int = 0):
+    def round_half_up(cls, number: Optional[float | int], ndigits: int = 0) -> Optional[Decimal]:
         """
         四舍五入计算
         具体使用时，需要根据实际情况调整

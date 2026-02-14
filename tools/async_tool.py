@@ -4,6 +4,7 @@
 import asyncio
 from functools import partial
 from concurrent import futures
+from typing import Any, Callable
 
 """
 准备工作：
@@ -12,7 +13,7 @@ from concurrent import futures
 """
 
 
-def pool_runner(func, arg_list: list, max_workers: int = 4):
+def pool_runner(func: Callable, arg_list: list[tuple[list[Any], dict[str, Any]]], max_workers: int = 4) -> list[Any]:
     """ run task in thread pool
     arg_list should contains args and kwargs stored in a tuple, eg:
     [
@@ -29,14 +30,14 @@ def pool_runner(func, arg_list: list, max_workers: int = 4):
     set kwargs to blank dict {} if not used
     """
 
-    result_list = []
+    result_list: list[Any] = []
     if not arg_list:
         return result_list
 
     executor = futures.ThreadPoolExecutor(max_workers=max_workers)
     loop = asyncio.new_event_loop()
 
-    future_list = []
+    future_list: list[asyncio.Future[Any]] = []
     for args, kwargs in arg_list:
         func_to_run = partial(func, *args, **kwargs)
         future_list.append(loop.run_in_executor(executor, func_to_run))

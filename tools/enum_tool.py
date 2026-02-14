@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
-from typing import List
 
 
 class DescribedEnum(Enum):
@@ -12,7 +11,7 @@ class DescribedEnum(Enum):
     desc: str        描述信息
     """
 
-    def __init__(self, mark: int, desc: str):
+    def __init__(self, mark: int, desc: str) -> None:
         self._mark = mark
         self._desc = desc
 
@@ -25,16 +24,16 @@ class DescribedEnum(Enum):
         return self._desc
 
     @classmethod
-    def get_all_marks(cls) -> List[int]:
+    def get_all_marks(cls) -> list[int]:
         return [described_enum.mark for described_enum in cls]
 
     @classmethod
-    def get_all_descs(cls) -> List[str]:
+    def get_all_descs(cls) -> list[str]:
         return [described_enum.desc for described_enum in cls]
 
     @classmethod
-    def get_choices(cls):
-        return ((described_enum.mark, described_enum.desc) for described_enum in cls)
+    def get_choices(cls) -> tuple[tuple[int, str], ...]:
+        return tuple((described_enum.mark, described_enum.desc) for described_enum in cls)
 
 
 if __name__ == '__main__':

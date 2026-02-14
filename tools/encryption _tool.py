@@ -3,11 +3,12 @@
 
 import base64
 from Crypto.PublicKey import RSA
+from typing import Optional
 
 
 class RSATool:
     """ RSA加密解密工具 """
-    def __init__(self, public_key_path=None, private_key_path=None):
+    def __init__(self, public_key_path: Optional[str] = None, private_key_path: Optional[str] = None) -> None:
         if public_key_path:
             try:
                 self.public_key = RSA.load_pub_key(public_key_path)
@@ -26,7 +27,7 @@ class RSATool:
         else:
             self.private_key = None
 
-    def encrypt_data(self, data: str):
+    def encrypt_data(self, data: str) -> Optional[str]:
         try:
             data_encode = data.encode()
             public_encrypt_data = self.public_key.public_encrypt(data_encode, RSA.pkcs1_padding)
@@ -37,7 +38,7 @@ class RSATool:
             print(f'encrypt data failed, data: [{data}], exception: [{e}]')
             return None
 
-    def decrypt_data(self, data: str):
+    def decrypt_data(self, data: str) -> Optional[str]:
         try:
             data_encode = data.encode()
             b64decode_public_encrypt_data = base64.b64decode(data_encode)

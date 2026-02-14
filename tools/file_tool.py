@@ -5,18 +5,19 @@ import os
 import json
 import yaml
 import hashlib
+from typing import Optional, Any
 
 
 class FileTool:
 
     @classmethod
-    def compare_file_size(cls, file_a, file_b):
+    def compare_file_size(cls, file_a: str, file_b: str) -> int:
         """比较文件大小"""
         assert file_a
         assert file_b
 
-        file_a_size = os.path.getsize(file_a)
-        file_b_size = os.path.getsize(file_a)
+        file_a_size: int = os.path.getsize(file_a)
+        file_b_size: int = os.path.getsize(file_a)
 
         if file_a_size > file_b_size:
             return 1
@@ -26,26 +27,26 @@ class FileTool:
             return -1
 
     @classmethod
-    def create_replica_file(cls, file_path):
+    def create_replica_file(cls, file_path: str) -> Optional[str]:
         """创建文件的副本"""
         if not os.path.exists(file_path):
             print("源文件路径不存在，请检查后重试")
-            return
+            return None
 
         # 获取原始文件的父路径和文件名并解析文件名
         parent_path, file_name = os.path.split(file_path)
         file_name_prefix, file_name_suffix = os.path.splitext(file_name)
 
         # 生成副本文件名称和路径
-        replica_file_name = file_name_prefix
+        replica_file_name: str = file_name_prefix
         replica_file_name += ' - 副本'
         replica_file_name += file_name_suffix
-        replica_file_path = os.path.join(parent_path, replica_file_name)
+        replica_file_path: str = os.path.join(parent_path, replica_file_name)
 
         # 判断目录下是否已经存在合法副本文件
         if os.path.exists(replica_file_path) and cls.compare_file_size(file_path, replica_file_path) == 0:
             print("同目录下已经存在副本文件，无需重复创建！")
-            return
+            return None
 
         # 源文件读取数据，副本文件写入数据
         with open(file_path, encoding='utf8') as file:
@@ -57,8 +58,8 @@ class FileTool:
         return replica_file_path
 
     @classmethod
-    def get_file_size(cls, file_path, unit=None):
-        size_in_bytes = os.path.getsize(file_path)
+    def get_file_size(cls, file_path: str, unit: Optional[str] = None) -> int | float:
+        size_in_bytes: int = os.path.getsize(file_path)
 
         unit = unit or "b"
         if unit == "b":
@@ -83,7 +84,7 @@ class FileTool:
             raise ValueError("Unit value error")
 
     @classmethod
-    def search_file_in_dir(cls, file_name, directory):
+    def search_file_in_dir(cls, file_name: str, directory: str) -> Optional[str]:
         for root, dirs, files in os.walk(directory):
             for file in files:
                 if file == file_name:
@@ -91,7 +92,7 @@ class FileTool:
         return None
 
     @classmethod
-    def read_json_file(cls, file_path):
+    def read_json_file(cls, file_path: str) -> dict[str, Any]:
         if not file_path:
             return dict()
 
@@ -99,7 +100,7 @@ class FileTool:
             return json.loads(f.read())
 
     @classmethod
-    def read_yaml_file(cls, file_path):
+    def read_yaml_file(cls, file_path: str) -> Optional[Any]:
         if not file_path:
             return dict()
 
@@ -111,7 +112,7 @@ class FileTool:
                 return None
 
     @classmethod
-    def calculate_md5(cls, file_path, buffer_size=8192):
+    def calculate_md5(cls, file_path: str, buffer_size: int = 8192) -> str:
         md5_hash = hashlib.md5()
 
         with open(file_path, 'rb') as file:
@@ -121,7 +122,7 @@ class FileTool:
         return md5_hash.hexdigest()
 
     @classmethod
-    def calculate_sha1(cls, file_path, buffer_size=8192):
+    def calculate_sha1(cls, file_path: str, buffer_size: int = 8192) -> str:
         sha1_hash = hashlib.sha1()
 
         with open(file_path, 'rb') as file:
@@ -131,7 +132,7 @@ class FileTool:
         return sha1_hash.hexdigest()
 
     @classmethod
-    def calculate_sha256(cls, file_path, buffer_size=8192):
+    def calculate_sha256(cls, file_path: str, buffer_size: int = 8192) -> str:
         sha256_hash = hashlib.sha256()
 
         with open(file_path, 'rb') as file:
@@ -141,7 +142,7 @@ class FileTool:
         return sha256_hash.hexdigest()
 
     @classmethod
-    def calculate_hash(cls, file_path, buffer_size=8192):
+    def calculate_hash(cls, file_path: str, buffer_size: int = 8192) -> dict[str, str]:
         md5_hash = hashlib.md5()
         sha1_hash = hashlib.sha1()
         sha256_hash = hashlib.sha256()

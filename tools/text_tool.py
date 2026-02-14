@@ -7,8 +7,10 @@ import difflib
 import hashlib
 
 from pypinyin import Style, pinyin
+from typing import Any, Optional
 
-NUM_ARABIC_TO_CH_MAP = {
+
+NUM_ARABIC_TO_CH_MAP: dict[int, str] = {
     0: '零',
     1: '一',
     2: '二',
@@ -21,7 +23,7 @@ NUM_ARABIC_TO_CH_MAP = {
     9: '九'
 }
 
-NUM_CH_TO_ARABIC_MAP = {
+NUM_CH_TO_ARABIC_MAP: dict[str, int] = {
     '零': 0,
     '一': 1,
     '二': 2,
@@ -34,7 +36,7 @@ NUM_CH_TO_ARABIC_MAP = {
     '九': 9
 }
 
-NUM_ARABIC_TO_TRA_CH_MAP = {
+NUM_ARABIC_TO_TRA_CH_MAP: dict[int, str] = {
     0: '零',
     1: '壹',
     2: '贰',
@@ -51,10 +53,10 @@ NUM_ARABIC_TO_TRA_CH_MAP = {
 class TextTool:
 
     @classmethod
-    def get_same_start_end(cls, pattern):
+    def get_same_start_end(cls, pattern: str) -> list[int]:
         """获取最长前后缀相同的字符位数"""
         n = len(pattern)
-        result_list = [0] * n
+        result_list: list[int] = [0] * n
 
         # pattern为单个字符，认为它没有公共头尾
         if n <= 1:
@@ -68,7 +70,7 @@ class TextTool:
         return result_list
 
     @classmethod
-    def match_sub_str(cls, string, pattern):
+    def match_sub_str(cls, string: str, pattern: str) -> int:
         """
             用来在字符串中搜索一个子字符串
             使用kmp算法
@@ -96,14 +98,14 @@ class TextTool:
         return -1  # 查找失败
 
     @classmethod
-    def is_str(cls, value):
+    def is_str(cls, value: Any) -> bool:
         """ 判断变量的值是否为字符串 """
         if (not isinstance(value, str)) and (not isinstance(value, bytes)):
             return False
         return True
 
     @classmethod
-    def is_all_chinese(cls, value):
+    def is_all_chinese(cls, value: str) -> bool:
         """ 检验是否全是中文字符 """
         for _char in value:
             if not u'\u4e00' <= _char <= u'\u9fff':
@@ -111,7 +113,7 @@ class TextTool:
         return True
 
     @classmethod
-    def is_contains_chinese(cls, value):
+    def is_contains_chinese(cls, value: str) -> bool:
         """ 检验是否含有中文字符 """
         for _char in value:
             if u'\u4e00' <= _char <= u'\u9fff':
@@ -119,58 +121,58 @@ class TextTool:
         return False
 
     @classmethod
-    def is_md5_value(cls, value):
+    def is_md5_value(cls, value: str) -> bool:
         """使用正则表达式检查是否为32个十六进制字符"""
         md5_pattern = re.compile(r"^[0-9a-fA-F]{32}$")
         return bool(md5_pattern.match(value))
 
     @classmethod
-    def is_sha1_value(cls, value):
+    def is_sha1_value(cls, value: str) -> bool:
         """使用正则表达式检查是否为40个十六进制字符"""
         sha1_pattern = re.compile(r"^[0-9a-fA-F]{40}$")
         return bool(sha1_pattern.match(value))
 
     @classmethod
-    def is_sha256_value(cls, value):
+    def is_sha256_value(cls, value: str) -> bool:
         """使用正则表达式检查是否为64个十六进制字符"""
         sha256_pattern = re.compile(r"^[0-9a-fA-F]{64}$")
         return bool(sha256_pattern.match(value))
 
     @classmethod
-    def calculate_crc32(cls, value):
+    def calculate_crc32(cls, value: str) -> int:
         crc32_value = zlib.crc32(value.encode("utf-8"))
         return crc32_value
 
     @classmethod
-    def calculate_md5(cls, value):
+    def calculate_md5(cls, value: str) -> str:
         md5_hash = hashlib.md5()
         md5_hash.update(value.encode("utf-8"))
         return md5_hash.hexdigest()
 
     @classmethod
-    def calculate_sha1(cls, value):
+    def calculate_sha1(cls, value: str) -> str:
         sha1_hash = hashlib.sha1()
         sha1_hash.update(value.encode("utf-8"))
         return sha1_hash.hexdigest()
 
     @classmethod
-    def calculate_sha256(cls, value):
+    def calculate_sha256(cls, value: str) -> str:
         sha256_hash = hashlib.sha256()
         sha256_hash.update(value.encode("utf-8"))
         return sha256_hash.hexdigest()
 
     @staticmethod
-    def get_char_max_index(text, char):
+    def get_char_max_index(text: str, char: str) -> int:
         """获取文本中某一个字符的最大索引"""
         return max([i for i, _ in enumerate(text) if _ == char])
 
     @staticmethod
-    def string_similar(str1, str2):
+    def string_similar(str1: str, str2: str) -> float:
         """计算文本相似度"""
         return difflib.SequenceMatcher(None, str1, str2).quick_ratio()
 
     @staticmethod
-    def convert_ch_to_arabic(text):
+    def convert_ch_to_arabic(text: str) -> str:
         """将文本中的汉字数字转换为拼音数字"""
         return (
             "".join(
@@ -183,7 +185,7 @@ class TextTool:
         )
 
     @staticmethod
-    def hanzi_to_pinyin(hanzi_name):
+    def hanzi_to_pinyin(hanzi_name: str) -> str:
         """汉字转为拼音（基础版）"""
         return (
             "".join(
@@ -202,7 +204,7 @@ class TextTool:
         )
 
     @staticmethod
-    def advanced_hanzi_to_pinyin(hanzi_name):
+    def advanced_hanzi_to_pinyin(hanzi_name: str) -> str:
         """汉字转为拼音（高级版）
 
         高级特色：

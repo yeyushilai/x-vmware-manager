@@ -2,28 +2,29 @@
 # -*- coding: utf-8 -*-
 
 
-from collections import Iterable, Iterator
+from collections.abc import Iterable, Iterator
+from typing import Any
 
 
 class IterableTool:
 
     @classmethod
-    def is_iterable_empty(cls, iterable):
+    def is_iterable_empty(cls, iterable: Iterable[Any]) -> bool:
         """判断可迭代对象是否为空"""
         return not any(iterable)
 
     @classmethod
-    def is_iterable(cls, variable):
+    def is_iterable(cls, variable: Any) -> bool:
         """判断是否为可迭代对象"""
         return isinstance(variable, Iterable)
 
     @classmethod
-    def is_iterator_empty(cls, iterator):
+    def is_iterator_empty(cls, iterator: Iterator[Any]) -> bool:
         """判断迭代器是否为空"""
         return not any(iterator)
 
     @classmethod
-    def is_iterator(cls, variable):
+    def is_iterator(cls, variable: Any) -> bool:
         """判断是否为迭代器"""
         return isinstance(variable, Iterator)
 

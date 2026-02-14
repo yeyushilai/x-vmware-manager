@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-import typing
+from typing import Any, Callable
 from collections import namedtuple
 
 import numpy as np
@@ -29,36 +29,36 @@ class DataAnalyticTool:
     """
 
     @staticmethod
-    def my_name_tuple(tuplename, filed_list):
-        def __setattr__(self, key, value):
+    def my_name_tuple(tuplename: str, filed_list: list[str]) -> type:
+        def __setattr__(self: Any, key: str, value: Any) -> None:
             self.__dict__[key] = value
 
         tuple_class = namedtuple(tuplename, filed_list)
         my_tuple = type(tuplename, (tuple_class,), {"__setattr__": __setattr__})
         return my_tuple
 
-    def __init__(self, header: None, table: list):
+    def __init__(self, header: tuple[str, ...], table: list[tuple[Any, ...]]) -> None:
         self.df = pd.DataFrame(table, columns=header).fillna(0)
-        self.Result = self.my_name_tuple("Result", header)
+        self.Result = self.my_name_tuple("Result", list(header))
 
-    def sum_columns(self, columns: tuple) -> namedtuple:
+    def sum_columns(self, columns: tuple[str, ...]) -> Any:
         """ 多列求和 """
-        Result = self.my_name_tuple("Result", columns)
+        Result = self.my_name_tuple("Result", list(columns))
         return Result._make(self.df[list(columns)].sum())
 
-    def filter(self, sql: str):
+    def filter(self, sql: str) -> 'DataAnalyticTool':
         """ 过滤 """
         sql = re.sub(r"[A-Za-z ]+(=)?", lambda mo: mo.group(0).replace("=", "=="), sql)
         self.df.query(sql.lower(), inplace=True)
         return self
 
-    def order_by(self, sql: str):
+    def order_by(self, sql: str) -> 'DataAnalyticTool':
         """ 根据某列对数据排序 """
         if not sql:
             raise ValueError("必须传入有效条件")
         conditions = sql.split(",")
-        by = []
-        ascending = []
+        by: list[str] = []
+        ascending: list[bool] = []
         for condition in conditions:
             cond = list(filter(None, condition.split(" ")))
             if len(cond) == 1:
@@ -78,12 +78,12 @@ class DataAnalyticTool:
         self.df = self.df.sort_values(by=by, ascending=ascending)
         return self
 
-    def limit(self, offset: int, page_size: int):
+    def limit(self, offset: int, page_size: int) -> 'DataAnalyticTool':
         """ 分页 """
         self.df = self.df.iloc[offset: offset + page_size]
         return self
 
-    def distinct(self, col: str) -> set:
+    def distinct(self, col: str) -> set[Any]:
         """去除重复项，可以用来做表头筛选
 
         :param col: 需要进行去重的列
@@ -94,11 +94,11 @@ class DataAnalyticTool:
         """ 计数 """
         return len(self.df)
 
-    def all(self) -> list:
+    def all(self) -> list[Any]:
         """ 获取全部数据 """
         return list(map(self.Result._make, self.df.values))
 
-    def join(self, analytic_obj, how: str = "outer"):
+    def join(self, analytic_obj: 'DataAnalyticTool', how: str = "outer") -> 'DataAnalyticTool':
         """在内存中进行 join, 对 pandas merge 方法的封装
         默认为外连接, 主要用来解决 MySQL 不支持 full outer join 语法
         两个对象 join 的时候, 必须确保有同名键
@@ -111,7 +111,7 @@ class DataAnalyticTool:
         r = self.df.merge(analytic_obj.df, how=how)
         return DataAnalyticTool(tuple(r.columns), np.array(r))
 
-    def append_column(self, col_name: str, rule: typing.Callable):
+    def append_column(self, col_name: str, rule: Callable) -> 'DataAnalyticTool':
         """给DataFrame增加一列
 
         :param col_name: 新列的名字
@@ -123,11 +123,11 @@ class DataAnalyticTool:
             self.df[col_name] = 0
         return DataAnalyticTool(tuple(self.df.columns), np.array(self.df))
 
-    def serailize(self, *args, **kwargs):
+    def serailize(self, *args: Any, **kwargs: Any) -> None:
         """ 序列化结果 """
         raise NotImplementedError
 
-    def group_by(self, *args):
+    def group_by(self, *args: str) -> 'DataAnalyticTool':
         """
         :params args: 需要分组的列
         注意会把分组求和, 只会有数字, 字符串会过滤掉
