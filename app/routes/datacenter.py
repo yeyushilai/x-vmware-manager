@@ -5,21 +5,22 @@
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 from app.core.config import settings
 from app.core.logger import logger
 from app.services.vmware_service import get_vmware_client
+from app.schemas import ApiResponse, DatacenterList, DatacenterInfo
 
-router = APIRouter()
+router: APIRouter = APIRouter()
 
 
-@router.get("", response_model=Dict[str, Any])
-async def list_datacenters():
+@router.get("", response_model=ApiResponse[DatacenterList])
+async def list_datacenters() -> ApiResponse[DatacenterList]:
     """获取数据中心列表
     
     Returns:
-        Dict[str, Any]: 数据中心列表响应
+        ApiResponse[DatacenterList]: 数据中心列表响应
     """
     try:
         client = get_vmware_client()
@@ -29,14 +30,14 @@ async def list_datacenters():
                 detail="VMware客户端未初始化"
             )
         
-        datacenters = client.list_datacenter()
+        datacenters: DatacenterList = client.list_datacenter()
         logger.info(f"获取数据中心列表成功，数量: {len(datacenters)}")
         
-        return {
-            'code': 0,
-            'message': 'success',
-            'data': datacenters
-        }
+        return ApiResponse(
+            code=0,
+            message='success',
+            data=datacenters
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -47,15 +48,15 @@ async def list_datacenters():
         )
 
 
-@router.get("/{dc_id}", response_model=Dict[str, Any])
-async def get_datacenter(dc_id: str):
+@router.get("/{dc_id}", response_model=ApiResponse[DatacenterInfo])
+async def get_datacenter(dc_id: str) -> ApiResponse[DatacenterInfo]:
     """获取数据中心详情
     
     Args:
         dc_id: 数据中心ID
     
     Returns:
-        Dict[str, Any]: 数据中心详情响应
+        ApiResponse[DatacenterInfo]: 数据中心详情响应
     """
     try:
         client = get_vmware_client()
@@ -65,7 +66,7 @@ async def get_datacenter(dc_id: str):
                 detail="VMware客户端未初始化"
             )
         
-        datacenter = client.detail_datacenter(dc_id)
+        datacenter: DatacenterInfo = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
@@ -74,11 +75,11 @@ async def get_datacenter(dc_id: str):
         
         logger.info(f"获取数据中心详情成功: {dc_id}")
         
-        return {
-            'code': 0,
-            'message': 'success',
-            'data': datacenter
-        }
+        return ApiResponse(
+            code=0,
+            message='success',
+            data=datacenter
+        )
     except HTTPException:
         raise
     except Exception as e:

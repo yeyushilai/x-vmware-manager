@@ -12,7 +12,7 @@
           "datacenter"
         ],
         "summary": "List Datacenters",
-        "description": "获取数据中心列表\n\nReturns:\n    Dict[str, Any]: 数据中心列表响应",
+        "description": "获取数据中心列表\n\nReturns:\n    ApiResponse[DatacenterList]: 数据中心列表响应",
         "operationId": "list_datacenters_api_v1_dcs_get",
         "responses": {
           "200": {
@@ -20,9 +20,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response List Datacenters Api V1 Dcs Get"
+                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
                 }
               }
             }
@@ -36,7 +34,7 @@
           "datacenter"
         ],
         "summary": "Get Datacenter",
-        "description": "获取数据中心详情\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str, Any]: 数据中心详情响应",
+        "description": "获取数据中心详情\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[DatacenterInfo]: 数据中心详情响应",
         "operationId": "get_datacenter_api_v1_dcs__dc_id__get",
         "parameters": [
           {
@@ -55,9 +53,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Datacenter Api V1 Dcs  Dc Id  Get"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
                 }
               }
             }
@@ -81,7 +77,7 @@
           "cluster"
         ],
         "summary": "List Clusters",
-        "description": "获取指定数据中心的集群列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str, Any]: 集群列表响应",
+        "description": "获取指定数据中心的集群列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[ClusterList]: 集群列表响应",
         "operationId": "list_clusters_api_v1_dcs__dc_id__clusters_get",
         "parameters": [
           {
@@ -100,9 +96,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response List Clusters Api V1 Dcs  Dc Id  Clusters Get"
+                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
                 }
               }
             }
@@ -126,7 +120,7 @@
           "cluster"
         ],
         "summary": "Get Cluster",
-        "description": "获取集群详情\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\nReturns:\n    Dict[str, Any]: 集群详情响应",
+        "description": "获取集群详情\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\nReturns:\n    ApiResponse[ClusterInfo]: 集群详情响应",
         "operationId": "get_cluster_api_v1_dcs__dc_id__clusters__cluster_id__get",
         "parameters": [
           {
@@ -154,9 +148,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Cluster Api V1 Dcs  Dc Id  Clusters  Cluster Id  Get"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
                 }
               }
             }
@@ -180,7 +172,7 @@
           "folder"
         ],
         "summary": "List Folders",
-        "description": "获取指定数据中心的文件夹列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str, Any]: 文件夹列表响应",
+        "description": "获取指定数据中心的文件夹列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[FolderList]: 文件夹列表响应",
         "operationId": "list_folders_api_v1_dcs__dc_id__folders_get",
         "parameters": [
           {
@@ -199,9 +191,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response List Folders Api V1 Dcs  Dc Id  Folders Get"
+                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
                 }
               }
             }
@@ -225,7 +215,7 @@
           "folder"
         ],
         "summary": "Get Folder",
-        "description": "获取文件夹详情\n\nArgs:\n    dc_id: 数据中心ID\n    folder_id: 文件夹ID\n\nReturns:\n    Dict[str, Any]: 文件夹详情响应",
+        "description": "获取文件夹详情\n\nArgs:\n    dc_id: 数据中心ID\n    folder_id: 文件夹ID\n\nReturns:\n    ApiResponse[FolderInfo]: 文件夹详情响应",
         "operationId": "get_folder_api_v1_dcs__dc_id__folders__folder_id__get",
         "parameters": [
           {
@@ -253,9 +243,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Folder Api V1 Dcs  Dc Id  Folders  Folder Id  Get"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
                 }
               }
             }
@@ -279,7 +267,7 @@
           "vm"
         ],
         "summary": "List Cluster Vms",
-        "description": "获取指定集群的虚拟机列表\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\nReturns:\n    Dict[str, Any]: 虚拟机列表响应",
+        "description": "获取指定集群的虚拟机列表\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\nReturns:\n    ApiResponse[VmList]: 虚拟机列表响应",
         "operationId": "list_cluster_vms_api_v1_dcs__dc_id__clusters__cluster_id__vms_get",
         "parameters": [
           {
@@ -307,9 +295,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response List Cluster Vms Api V1 Dcs  Dc Id  Clusters  Cluster Id  Vms Get"
+                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
                 }
               }
             }
@@ -333,7 +319,7 @@
           "vm"
         ],
         "summary": "Get Vm",
-        "description": "获取虚拟机详情\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    Dict[str, Any]: 虚拟机详情响应",
+        "description": "获取虚拟机详情\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[VmInfo]: 虚拟机详情响应",
         "operationId": "get_vm_api_v1_dcs__dc_id__vms__vm_id__get",
         "parameters": [
           {
@@ -361,9 +347,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Get"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
                 }
               }
             }
@@ -387,7 +371,7 @@
           "vm"
         ],
         "summary": "Poweron Vm",
-        "description": "启动虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    Dict[str, Any]: 操作响应",
+        "description": "启动虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
         "operationId": "poweron_vm_api_v1_dcs__dc_id__vms__vm_id__poweron_post",
         "parameters": [
           {
@@ -415,9 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Poweron Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Poweron Post"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
                 }
               }
             }
@@ -441,7 +423,7 @@
           "vm"
         ],
         "summary": "Poweroff Vm",
-        "description": "关闭虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    Dict[str, Any]: 操作响应",
+        "description": "关闭虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
         "operationId": "poweroff_vm_api_v1_dcs__dc_id__vms__vm_id__poweroff_post",
         "parameters": [
           {
@@ -469,9 +451,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Poweroff Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Poweroff Post"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
                 }
               }
             }
@@ -495,7 +475,7 @@
           "vm"
         ],
         "summary": "Reboot Vm",
-        "description": "重启虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    Dict[str, Any]: 操作响应",
+        "description": "重启虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
         "operationId": "reboot_vm_api_v1_dcs__dc_id__vms__vm_id__reboot_post",
         "parameters": [
           {
@@ -523,9 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Reboot Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Reboot Post"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
                 }
               }
             }
@@ -549,7 +527,7 @@
           "vm"
         ],
         "summary": "Suspend Vm",
-        "description": "挂起虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    Dict[str, Any]: 操作响应",
+        "description": "挂起虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
         "operationId": "suspend_vm_api_v1_dcs__dc_id__vms__vm_id__suspend_post",
         "parameters": [
           {
@@ -577,9 +555,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Suspend Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Suspend Post"
+                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
                 }
               }
             }
@@ -607,7 +583,13 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Check Health Get"
+                }
               }
             }
           }
@@ -617,6 +599,110 @@
   },
   "components": {
     "schemas": {
+      "ApiResponse_Dict_str__Any__": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "description": "响应状态码，0表示成功"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "响应消息"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "响应数据"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ApiResponse[Dict[str, Any]]"
+      },
+      "ApiResponse_Dict_str__str__": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "description": "响应状态码，0表示成功"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "响应消息"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "响应数据"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ApiResponse[Dict[str, str]]"
+      },
+      "ApiResponse_List_Dict_str__Any___": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "description": "响应状态码，0表示成功"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "响应消息"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "响应数据"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ApiResponse[List[Dict[str, Any]]]"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {

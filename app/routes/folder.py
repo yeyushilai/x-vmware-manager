@@ -9,19 +9,20 @@ from typing import Dict, Any
 
 from app.core.logger import logger
 from app.services.vmware_service import get_vmware_client
+from app.schemas import ApiResponse, FolderList, FolderInfo
 
-router = APIRouter()
+router: APIRouter = APIRouter()
 
 
-@router.get("/{dc_id}/folders", response_model=Dict[str, Any])
-async def list_folders(dc_id: str):
+@router.get("/{dc_id}/folders", response_model=ApiResponse[FolderList])
+async def list_folders(dc_id: str) -> ApiResponse[FolderList]:
     """获取指定数据中心的文件夹列表
     
     Args:
         dc_id: 数据中心ID
     
     Returns:
-        Dict[str, Any]: 文件夹列表响应
+        ApiResponse[FolderList]: 文件夹列表响应
     """
     try:
         client = get_vmware_client()
@@ -32,21 +33,21 @@ async def list_folders(dc_id: str):
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter = client.detail_datacenter(dc_id)
+        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
                 detail="数据中心不存在"
             )
         
-        folders = client.list_folders(dc_id)
+        folders: FolderList = client.list_folders(dc_id)
         logger.info(f"获取文件夹列表成功，数据中心: {dc_id}, 数量: {len(folders)}")
         
-        return {
-            'code': 0,
-            'message': 'success',
-            'data': folders
-        }
+        return ApiResponse(
+            code=0,
+            message='success',
+            data=folders
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -57,8 +58,8 @@ async def list_folders(dc_id: str):
         )
 
 
-@router.get("/{dc_id}/folders/{folder_id}", response_model=Dict[str, Any])
-async def get_folder(dc_id: str, folder_id: str):
+@router.get("/{dc_id}/folders/{folder_id}", response_model=ApiResponse[FolderInfo])
+async def get_folder(dc_id: str, folder_id: str) -> ApiResponse[FolderInfo]:
     """获取文件夹详情
     
     Args:
@@ -66,7 +67,7 @@ async def get_folder(dc_id: str, folder_id: str):
         folder_id: 文件夹ID
     
     Returns:
-        Dict[str, Any]: 文件夹详情响应
+        ApiResponse[FolderInfo]: 文件夹详情响应
     """
     try:
         client = get_vmware_client()
@@ -77,21 +78,21 @@ async def get_folder(dc_id: str, folder_id: str):
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter = client.detail_datacenter(dc_id)
+        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
                 detail="数据中心不存在"
             )
         
-        folder_detail = client.detail_folder(folder_id, dc_id)
+        folder_detail: FolderInfo = client.detail_folder(folder_id, dc_id)
         logger.info(f"获取文件夹详情成功: {folder_id}")
         
-        return {
-            'code': 0,
-            'message': 'success',
-            'data': folder_detail
-        }
+        return ApiResponse(
+            code=0,
+            message='success',
+            data=folder_detail
+        )
     except HTTPException:
         raise
     except Exception as e:

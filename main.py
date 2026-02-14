@@ -9,6 +9,7 @@ import os
 import sys
 import json
 import yaml
+from typing import Dict, Any, AsyncIterator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,7 +22,7 @@ from app.core.config import settings
 from app.core.logger import logger
 
 
-def generate_swagger_spec(app_instance):
+def generate_swagger_spec(app_instance: FastAPI) -> None:
     """生成Swagger规范文件
     
     Args:
@@ -32,20 +33,20 @@ def generate_swagger_spec(app_instance):
     """
     try:
         # 获取OpenAPI规范
-        openapi_spec = app_instance.openapi()
+        openapi_spec: Dict[str, Any] = app_instance.openapi()
         
         # 确保输出目录存在
-        output_dir = 'swagger'
+        output_dir: str = 'swagger'
         os.makedirs(output_dir, exist_ok=True)
         
         # 生成JSON文件
-        json_path = os.path.join(output_dir, 'swagger.json')
+        json_path: str = os.path.join(output_dir, 'swagger.json')
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(openapi_spec, f, indent=2, ensure_ascii=False)
         logger.info(f"✓ Swagger JSON文件生成成功: {json_path}")
         
         # 生成YAML文件
-        yaml_path = os.path.join(output_dir, 'swagger.yaml')
+        yaml_path: str = os.path.join(output_dir, 'swagger.yaml')
         with open(yaml_path, 'w', encoding='utf-8') as f:
             yaml.dump(openapi_spec, f, default_flow_style=False, allow_unicode=True)
         logger.info(f"✓ Swagger YAML文件生成成功: {yaml_path}")
@@ -54,7 +55,7 @@ def generate_swagger_spec(app_instance):
 
 
 @asynccontextmanager
-async def lifespan(app_instance: FastAPI):
+async def lifespan(app_instance: FastAPI) -> AsyncIterator[None]:
     """应用生命周期管理
     
     Args:
@@ -78,7 +79,7 @@ async def lifespan(app_instance: FastAPI):
 
 
 # 创建FastAPI应用实例
-app = FastAPI(
+app: FastAPI = FastAPI(
     title="VMware Manager API",
     description="VMware vSphere平台管理工具API",
     version="0.1.0",
@@ -101,7 +102,7 @@ app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> Dict[str, str]:
     """健康检查接口"""
     return {
         "status": "healthy",

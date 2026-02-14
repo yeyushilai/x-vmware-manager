@@ -4,6 +4,7 @@
 VMware vSphere类
 """
 
+from typing import Dict, Any, List, Optional
 from .interface import VMwareVSphereInterface, PlatformVmOperationType
 from app.core.logger import logger
 
@@ -14,16 +15,16 @@ class VMwareVSphere:
     用于管理VMware vSphere平台的连接和操作
     """
 
-    def __init__(self, account):
+    def __init__(self, account: Dict[str, str]) -> None:
         """初始化VMwareVSphere实例
         
         Args:
             account: VMware连接配置字典
         """
-        self.account = account
-        self.vi = VMwareVSphereInterface(account)
+        self.account: Dict[str, str] = account
+        self.vi: VMwareVSphereInterface = VMwareVSphereInterface(account)
 
-    def is_connected(self):
+    def is_connected(self) -> bool:
         """检查和VMware vSphere平台的连通性
         
         Returns:
@@ -35,11 +36,11 @@ class VMwareVSphere:
             logger.error(f"检查VMware连接失败: {e}")
             return False
 
-    def detail_root_folder(self):
+    def detail_root_folder(self) -> List[Dict[str, Any]]:
         """获取根文件夹详情
         
         Returns:
-            list: 根文件夹下的子实体列表
+            List[Dict[str, Any]]: 根文件夹下的子实体列表
         """
         try:
             root_folder = self.vi.root_folder
@@ -48,7 +49,7 @@ class VMwareVSphere:
             logger.error(f"获取根文件夹详情失败: {e}")
             return []
 
-    def detail_folder(self, folder_moid, datacenter_moid):
+    def detail_folder(self, folder_moid: str, datacenter_moid: str) -> List[Dict[str, Any]]:
         """获取指定文件夹详情
         
         Args:
@@ -56,7 +57,7 @@ class VMwareVSphere:
             datacenter_moid: 数据中心MOID
         
         Returns:
-            list: 文件夹下的子实体列表
+            List[Dict[str, Any]]: 文件夹下的子实体列表
         """
         try:
             folder_obj = self.vi.get_folder(folder_moid, datacenter_moid)
@@ -67,7 +68,7 @@ class VMwareVSphere:
             logger.error(f"获取文件夹详情失败: {e}")
             return []
 
-    def _loop_child_entity(self, folder_obj, datacenter_moid=None):
+    def _loop_child_entity(self, folder_obj: Any, datacenter_moid: Optional[str] = None) -> List[Dict[str, Any]]:
         """递归遍历子实体
         
         Args:
@@ -75,12 +76,12 @@ class VMwareVSphere:
             datacenter_moid: 数据中心MOID
         
         Returns:
-            list: 子实体列表
+            List[Dict[str, Any]]: 子实体列表
         """
-        data = []
+        data: List[Dict[str, Any]] = []
         try:
             for mo_obj in folder_obj.childEntity:
-                mo_dict = {
+                mo_dict: Dict[str, Any] = {
                     "name": mo_obj.name,
                     "moid": mo_obj._moId,
                     "datacenter_id": datacenter_moid
@@ -106,30 +107,30 @@ class VMwareVSphere:
             logger.error(f"遍历子实体失败: {e}")
         return data
 
-    def list_datacenter(self):
+    def list_datacenter(self) -> List[Dict[str, Any]]:
         """获取数据中心列表
         
         Returns:
-            list: 数据中心列表
+            List[Dict[str, Any]]: 数据中心列表
         """
         try:
-            dc_list = []
+            dc_list: List[Dict[str, Any]] = []
             for dc_obj in self.vi.datacenters:
-                dc_info = self._layout_datacenter(dc_obj=dc_obj)
+                dc_info: Dict[str, Any] = self._layout_datacenter(dc_obj=dc_obj)
                 dc_list.append(dc_info)
             return dc_list
         except Exception as e:
             logger.error(f"获取数据中心列表失败: {e}")
             return []
 
-    def detail_datacenter(self, dc_moid):
+    def detail_datacenter(self, dc_moid: str) -> Dict[str, Any]:
         """获取数据中心详情
         
         Args:
             dc_moid: 数据中心MOID
         
         Returns:
-            dict: 数据中心详情
+            Dict[str, Any]: 数据中心详情
         """
         try:
             return self._layout_datacenter(dc_moid=dc_moid)
@@ -137,7 +138,7 @@ class VMwareVSphere:
             logger.error(f"获取数据中心详情失败: {e}")
             return {}
 
-    def _layout_datacenter(self, dc_moid=None, dc_obj=None):
+    def _layout_datacenter(self, dc_moid: Optional[str] = None, dc_obj: Optional[Any] = None) -> Dict[str, Any]:
         """构建数据中心信息
         
         Args:
@@ -145,7 +146,7 @@ class VMwareVSphere:
             dc_obj: 数据中心对象
         
         Returns:
-            dict: 数据中心信息
+            Dict[str, Any]: 数据中心信息
         """
         assert dc_moid or dc_obj
         
@@ -154,7 +155,7 @@ class VMwareVSphere:
             if not dc_obj:
                 return {}
 
-        dc_info = {
+        dc_info: Dict[str, Any] = {
             "name": dc_obj.name,
             "moid": dc_obj._moId,
             "vm_folder_name": dc_obj.vmFolder.name,
@@ -168,14 +169,14 @@ class VMwareVSphere:
             from pyVmomi import vim
             for child in dc_obj.hostFolder.childEntity:
                 if isinstance(child, vim.ClusterComputeResource):
-                    cluster_dict = {
+                    cluster_dict: Dict[str, Any] = {
                         "name": child.name,
                         "moid": child._moId,
                         "host_list": []
                     }
                     
                     for host in child.host:
-                        host_dict = {
+                        host_dict: Dict[str, str] = {
                             "name": host.name,
                             "moid": host._moId
                         }
@@ -187,17 +188,17 @@ class VMwareVSphere:
 
         return dc_info
 
-    def list_cluster(self, cluster_name=None):
+    def list_cluster(self, cluster_name: Optional[str] = None) -> List[Dict[str, str]]:
         """获取集群列表
         
         Args:
             cluster_name: 集群名称
         
         Returns:
-            list: 集群列表
+            List[Dict[str, str]]: 集群列表
         """
         try:
-            result = []
+            result: List[Dict[str, str]] = []
             
             from pyVmomi import vim
             if cluster_name:
@@ -213,24 +214,24 @@ class VMwareVSphere:
             logger.error(f"获取集群列表失败: {e}")
             return []
 
-    def list_cluster_vm(self, cluster_name):
+    def list_cluster_vm(self, cluster_name: str) -> List[Dict[str, Any]]:
         """获取集群中的虚拟机列表
         
         Args:
             cluster_name: 集群名称
         
         Returns:
-            list: 虚拟机列表
+            List[Dict[str, Any]]: 虚拟机列表
         """
         try:
-            vms_data = []
+            vms_data: List[Dict[str, Any]] = []
             for vm_data in self.vi.get_cluster_vms(cluster_name):
                 try:
-                    vm_info = self.vi.layout_dict_vm_data(vm_data)
+                    vm_info: Optional[Dict[str, Any]] = self.vi.layout_dict_vm_data(vm_data)
                     if vm_info:
                         vms_data.append(vm_info)
                 except Exception as e:
-                    uuid = vm_data.get("summary.config.uuid", "unknown")
+                    uuid: str = vm_data.get("summary.config.uuid", "unknown")
                     logger.error(f"处理虚拟机数据失败, uuid: {uuid}, 原因: {e}")
                     continue
             return vms_data
@@ -238,24 +239,24 @@ class VMwareVSphere:
             logger.error(f"获取集群虚拟机列表失败: {e}")
             return []
 
-    def list_vm(self, vm_properties=None):
+    def list_vm(self, vm_properties: Optional[List[str]] = None) -> List[Dict[str, Any]]:
         """获取所有虚拟机列表
         
         Args:
             vm_properties: 虚拟机属性列表
         
         Returns:
-            list: 虚拟机列表
+            List[Dict[str, Any]]: 虚拟机列表
         """
         try:
-            vms_list = []
+            vms_list: List[Dict[str, Any]] = []
             for vm_data in self.vi.get_vms_properties(vm_properties):
                 try:
-                    vm_info = self.vi.layout_dict_vm_data(vm_data)
+                    vm_info: Optional[Dict[str, Any]] = self.vi.layout_dict_vm_data(vm_data)
                     if vm_info:
                         vms_list.append(vm_info)
                 except Exception as e:
-                    uuid = vm_data.get("summary.config.uuid", "unknown")
+                    uuid: str = vm_data.get("summary.config.uuid", "unknown")
                     logger.error(f"处理虚拟机数据失败, uuid: {uuid}, 原因: {e}")
                     continue
             return vms_list
@@ -263,7 +264,7 @@ class VMwareVSphere:
             logger.error(f"获取虚拟机列表失败: {e}")
             return []
 
-    def get_vm(self, vm_name=None, vm_uuid=None):
+    def get_vm(self, vm_name: Optional[str] = None, vm_uuid: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """获取虚拟机详情
         
         Args:
@@ -271,7 +272,7 @@ class VMwareVSphere:
             vm_uuid: 虚拟机UUID
         
         Returns:
-            dict: 虚拟机详情
+            Optional[Dict[str, Any]]: 虚拟机详情
         """
         try:
             if vm_name:
@@ -287,14 +288,14 @@ class VMwareVSphere:
             logger.error(f"获取虚拟机详情失败: {e}")
             return None
 
-    def get_vm_ticket(self, vm_uuid):
+    def get_vm_ticket(self, vm_uuid: str) -> Optional[Dict[str, Any]]:
         """获取虚拟机票据
         
         Args:
             vm_uuid: 虚拟机UUID
         
         Returns:
-            dict: 虚拟机票据
+            Optional[Dict[str, Any]]: 虚拟机票据
         """
         try:
             vm_ticket_obj = self.vi.get_vm_ticket_by_uuid(vm_uuid)
@@ -307,14 +308,14 @@ class VMwareVSphere:
             logger.error(f"获取虚拟机票据失败: {e}")
             return None
 
-    def get_vm_power_status(self, vm_uuid):
+    def get_vm_power_status(self, vm_uuid: str) -> Optional[str]:
         """获取虚拟机电源状态
         
         Args:
             vm_uuid: 虚拟机UUID
         
         Returns:
-            str: 虚拟机电源状态
+            Optional[str]: 虚拟机电源状态
         """
         try:
             vm_obj = self.vi.get_vm_by_uuid(vm_uuid)
@@ -325,7 +326,7 @@ class VMwareVSphere:
             logger.error(f"获取虚拟机电源状态失败: {e}")
             return None
 
-    def update_vm(self, vm_uuid, vm_info):
+    def update_vm(self, vm_uuid: str, vm_info: Dict[str, Any]) -> Optional[Any]:
         """更新虚拟机信息
         
         Args:
@@ -333,7 +334,7 @@ class VMwareVSphere:
             vm_info: 虚拟机信息
         
         Returns:
-            None
+            Optional[Any]: 更新结果
         """
         try:
             return self.vi.update_vm_by_uuid(vm_uuid, vm_info)
@@ -341,7 +342,7 @@ class VMwareVSphere:
             logger.error(f"更新虚拟机信息失败: {e}")
             return None
 
-    def operate_vm(self, vm_uuid, operation):
+    def operate_vm(self, vm_uuid: str, operation: str) -> Optional[Any]:
         """操作虚拟机
         
         Args:
@@ -349,7 +350,7 @@ class VMwareVSphere:
             operation: 操作类型
         
         Returns:
-            None
+            Optional[Any]: 操作结果
         """
         try:
             return self.vi.operate_vm_by_uuid(vm_uuid, operation)
@@ -357,19 +358,19 @@ class VMwareVSphere:
             logger.error(f"操作虚拟机失败: {e}")
             return None
 
-    def list_folders(self, datacenter_moid=None):
+    def list_folders(self, datacenter_moid: Optional[str] = None) -> List[Dict[str, Any]]:
         """获取文件夹列表
         
         Args:
             datacenter_moid: 数据中心MOID
         
         Returns:
-            list: 文件夹列表
+            List[Dict[str, Any]]: 文件夹列表
         """
         try:
-            folders = []
+            folders: List[Dict[str, Any]] = []
             for folder_obj in self.vi.folders:
-                folder_info = {
+                folder_info: Dict[str, Any] = {
                     "name": folder_obj.name,
                     "moid": folder_obj._moId,
                     "has_child": bool(folder_obj.childEntity)

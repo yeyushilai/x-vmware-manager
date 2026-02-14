@@ -1,5 +1,74 @@
 components:
   schemas:
+    ApiResponse_Dict_str__Any__:
+      properties:
+        code:
+          description: 响应状态码，0表示成功
+          title: Code
+          type: integer
+        data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          description: 响应数据
+          title: Data
+        message:
+          description: 响应消息
+          title: Message
+          type: string
+      required:
+      - code
+      - message
+      title: ApiResponse[Dict[str, Any]]
+      type: object
+    ApiResponse_Dict_str__str__:
+      properties:
+        code:
+          description: 响应状态码，0表示成功
+          title: Code
+          type: integer
+        data:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          description: 响应数据
+          title: Data
+        message:
+          description: 响应消息
+          title: Message
+          type: string
+      required:
+      - code
+      - message
+      title: ApiResponse[Dict[str, str]]
+      type: object
+    ApiResponse_List_Dict_str__Any___:
+      properties:
+        code:
+          description: 响应状态码，0表示成功
+          title: Code
+          type: integer
+        data:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          description: 响应数据
+          title: Data
+        message:
+          description: 响应消息
+          title: Message
+          type: string
+      required:
+      - code
+      - message
+      title: ApiResponse[List[Dict[str, Any]]]
+      type: object
     HTTPValidationError:
       properties:
         detail:
@@ -43,24 +112,22 @@ openapi: 3.1.0
 paths:
   /api/v1/dcs:
     get:
-      description: "获取数据中心列表\n\nReturns:\n    Dict[str, Any]: 数据中心列表响应"
+      description: "获取数据中心列表\n\nReturns:\n    ApiResponse[DatacenterList]: 数据中心列表响应"
       operationId: list_datacenters_api_v1_dcs_get
       responses:
         '200':
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response List Datacenters Api V1 Dcs Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_List_Dict_str__Any___'
           description: Successful Response
       summary: List Datacenters
       tags:
       - datacenter
   /api/v1/dcs/{dc_id}:
     get:
-      description: "获取数据中心详情\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str,\
-        \ Any]: 数据中心详情响应"
+      description: "获取数据中心详情\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[DatacenterInfo]:\
+        \ 数据中心详情响应"
       operationId: get_datacenter_api_v1_dcs__dc_id__get
       parameters:
       - in: path
@@ -74,9 +141,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Get Datacenter Api V1 Dcs  Dc Id  Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__Any__'
           description: Successful Response
         '422':
           content:
@@ -89,8 +154,8 @@ paths:
       - datacenter
   /api/v1/dcs/{dc_id}/clusters:
     get:
-      description: "获取指定数据中心的集群列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str,\
-        \ Any]: 集群列表响应"
+      description: "获取指定数据中心的集群列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[ClusterList]:\
+        \ 集群列表响应"
       operationId: list_clusters_api_v1_dcs__dc_id__clusters_get
       parameters:
       - in: path
@@ -104,9 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response List Clusters Api V1 Dcs  Dc Id  Clusters Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_List_Dict_str__Any___'
           description: Successful Response
         '422':
           content:
@@ -120,7 +183,7 @@ paths:
   /api/v1/dcs/{dc_id}/clusters/{cluster_id}:
     get:
       description: "获取集群详情\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\nReturns:\n\
-        \    Dict[str, Any]: 集群详情响应"
+        \    ApiResponse[ClusterInfo]: 集群详情响应"
       operationId: get_cluster_api_v1_dcs__dc_id__clusters__cluster_id__get
       parameters:
       - in: path
@@ -140,9 +203,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Get Cluster Api V1 Dcs  Dc Id  Clusters  Cluster Id  Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__Any__'
           description: Successful Response
         '422':
           content:
@@ -156,7 +217,7 @@ paths:
   /api/v1/dcs/{dc_id}/clusters/{cluster_id}/vms:
     get:
       description: "获取指定集群的虚拟机列表\n\nArgs:\n    dc_id: 数据中心ID\n    cluster_id: 集群ID\n\
-        \nReturns:\n    Dict[str, Any]: 虚拟机列表响应"
+        \nReturns:\n    ApiResponse[VmList]: 虚拟机列表响应"
       operationId: list_cluster_vms_api_v1_dcs__dc_id__clusters__cluster_id__vms_get
       parameters:
       - in: path
@@ -176,10 +237,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response List Cluster Vms Api V1 Dcs  Dc Id  Clusters  Cluster
-                  Id  Vms Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_List_Dict_str__Any___'
           description: Successful Response
         '422':
           content:
@@ -192,8 +250,8 @@ paths:
       - vm
   /api/v1/dcs/{dc_id}/folders:
     get:
-      description: "获取指定数据中心的文件夹列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    Dict[str,\
-        \ Any]: 文件夹列表响应"
+      description: "获取指定数据中心的文件夹列表\n\nArgs:\n    dc_id: 数据中心ID\n\nReturns:\n    ApiResponse[FolderList]:\
+        \ 文件夹列表响应"
       operationId: list_folders_api_v1_dcs__dc_id__folders_get
       parameters:
       - in: path
@@ -207,9 +265,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response List Folders Api V1 Dcs  Dc Id  Folders Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_List_Dict_str__Any___'
           description: Successful Response
         '422':
           content:
@@ -223,7 +279,7 @@ paths:
   /api/v1/dcs/{dc_id}/folders/{folder_id}:
     get:
       description: "获取文件夹详情\n\nArgs:\n    dc_id: 数据中心ID\n    folder_id: 文件夹ID\n\n\
-        Returns:\n    Dict[str, Any]: 文件夹详情响应"
+        Returns:\n    ApiResponse[FolderInfo]: 文件夹详情响应"
       operationId: get_folder_api_v1_dcs__dc_id__folders__folder_id__get
       parameters:
       - in: path
@@ -243,9 +299,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Get Folder Api V1 Dcs  Dc Id  Folders  Folder Id  Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__Any__'
           description: Successful Response
         '422':
           content:
@@ -259,7 +313,7 @@ paths:
   /api/v1/dcs/{dc_id}/vms/{vm_id}:
     get:
       description: "获取虚拟机详情\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n\
-        \    Dict[str, Any]: 虚拟机详情响应"
+        \    ApiResponse[VmInfo]: 虚拟机详情响应"
       operationId: get_vm_api_v1_dcs__dc_id__vms__vm_id__get
       parameters:
       - in: path
@@ -279,9 +333,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Get Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Get
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__Any__'
           description: Successful Response
         '422':
           content:
@@ -295,7 +347,7 @@ paths:
   /api/v1/dcs/{dc_id}/vms/{vm_id}/poweroff:
     post:
       description: "关闭虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n\
-        \    Dict[str, Any]: 操作响应"
+        \    ApiResponse[Dict[str, str]]: 操作响应"
       operationId: poweroff_vm_api_v1_dcs__dc_id__vms__vm_id__poweroff_post
       parameters:
       - in: path
@@ -315,10 +367,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Poweroff Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Poweroff
-                  Post
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__str__'
           description: Successful Response
         '422':
           content:
@@ -332,7 +381,7 @@ paths:
   /api/v1/dcs/{dc_id}/vms/{vm_id}/poweron:
     post:
       description: "启动虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n\
-        \    Dict[str, Any]: 操作响应"
+        \    ApiResponse[Dict[str, str]]: 操作响应"
       operationId: poweron_vm_api_v1_dcs__dc_id__vms__vm_id__poweron_post
       parameters:
       - in: path
@@ -352,10 +401,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Poweron Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Poweron
-                  Post
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__str__'
           description: Successful Response
         '422':
           content:
@@ -369,7 +415,7 @@ paths:
   /api/v1/dcs/{dc_id}/vms/{vm_id}/reboot:
     post:
       description: "重启虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n\
-        \    Dict[str, Any]: 操作响应"
+        \    ApiResponse[Dict[str, str]]: 操作响应"
       operationId: reboot_vm_api_v1_dcs__dc_id__vms__vm_id__reboot_post
       parameters:
       - in: path
@@ -389,9 +435,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Reboot Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Reboot Post
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__str__'
           description: Successful Response
         '422':
           content:
@@ -405,7 +449,7 @@ paths:
   /api/v1/dcs/{dc_id}/vms/{vm_id}/suspend:
     post:
       description: "挂起虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n\
-        \    Dict[str, Any]: 操作响应"
+        \    ApiResponse[Dict[str, str]]: 操作响应"
       operationId: suspend_vm_api_v1_dcs__dc_id__vms__vm_id__suspend_post
       parameters:
       - in: path
@@ -425,10 +469,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: true
-                title: Response Suspend Vm Api V1 Dcs  Dc Id  Vms  Vm Id  Suspend
-                  Post
-                type: object
+                $ref: '#/components/schemas/ApiResponse_Dict_str__str__'
           description: Successful Response
         '422':
           content:
@@ -447,6 +488,10 @@ paths:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                additionalProperties:
+                  type: string
+                title: Response Health Check Health Get
+                type: object
           description: Successful Response
       summary: Health Check
