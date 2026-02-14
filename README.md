@@ -61,7 +61,7 @@ set PORT=8000
 python main.py
 ```
 
-服务将运行在 `http://0.0.0.0:8000`
+服务将运行在 `http://localhost:8000`
 
 ## API文档
 

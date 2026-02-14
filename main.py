@@ -66,8 +66,8 @@ async def lifespan(app_instance: FastAPI) -> AsyncIterator[None]:
     """
     # 启动事件
     logger.info("启动VMware Manager API服务")
-    logger.info(f"服务运行在: http://0.0.0.0:{settings.PORT}")
-    logger.info(f"API文档: http://0.0.0.0:{settings.PORT}/docs")
+    logger.info(f"服务运行在: http://localhost:{settings.PORT}")
+    logger.info(f"API文档: http://localhost:{settings.PORT}/docs")
     
     # 生成Swagger文件
     generate_swagger_spec(app_instance)
