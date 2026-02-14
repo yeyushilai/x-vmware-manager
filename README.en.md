@@ -67,6 +67,9 @@ The service will run at `http://0.0.0.0:8000`
 
 - **Swagger UI**: `http://localhost:8000/docs`
 - **ReDoc**: `http://localhost:8000/redoc`
+- **Swagger Files**: Automatically generated in the `swagger/` directory when the service starts
+  - `swagger/swagger.json` - Swagger documentation in JSON format
+  - `swagger/swagger.yaml` - Swagger documentation in YAML format
 
 ## API Interface List
 
@@ -114,6 +117,9 @@ vmware-manager/
 │   ├── tools/                # VMware tools
 │   ├── __init__.py           # VMware class
 │   └── interface.py          # VMware interface
+├── swagger/                  # Swagger documentation directory
+│   ├── swagger.json          # Swagger documentation in JSON format
+│   └── swagger.yaml          # Swagger documentation in YAML format
 ├── main.py                   # Application entry
 ├── pyproject.toml            # Project configuration
 └── README.md                 # Project documentation

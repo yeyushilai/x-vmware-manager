@@ -7,6 +7,9 @@ VMware Manager API服务主入口
 
 import os
 import sys
+import json
+import yaml
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,13 +20,71 @@ from app.routes import api_router
 from app.core.config import settings
 from app.core.logger import logger
 
+
+def generate_swagger_spec(app_instance):
+    """生成Swagger规范文件
+    
+    Args:
+        app_instance: FastAPI应用实例
+    
+    Returns:
+        None
+    """
+    try:
+        # 获取OpenAPI规范
+        openapi_spec = app_instance.openapi()
+        
+        # 确保输出目录存在
+        output_dir = 'swagger'
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # 生成JSON文件
+        json_path = os.path.join(output_dir, 'swagger.json')
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(openapi_spec, f, indent=2, ensure_ascii=False)
+        logger.info(f"✓ Swagger JSON文件生成成功: {json_path}")
+        
+        # 生成YAML文件
+        yaml_path = os.path.join(output_dir, 'swagger.yaml')
+        with open(yaml_path, 'w', encoding='utf-8') as f:
+            yaml.dump(openapi_spec, f, default_flow_style=False, allow_unicode=True)
+        logger.info(f"✓ Swagger YAML文件生成成功: {yaml_path}")
+    except Exception as e:
+        logger.error(f"生成Swagger文件失败: {e}")
+
+
+@asynccontextmanager
+async def lifespan(app_instance: FastAPI):
+    """应用生命周期管理
+    
+    Args:
+        app_instance: FastAPI应用实例
+    
+    Yields:
+        None
+    """
+    # 启动事件
+    logger.info("启动VMware Manager API服务")
+    logger.info(f"服务运行在: http://0.0.0.0:{settings.PORT}")
+    logger.info(f"API文档: http://0.0.0.0:{settings.PORT}/docs")
+    
+    # 生成Swagger文件
+    generate_swagger_spec(app_instance)
+    
+    yield
+    
+    # 关闭事件
+    logger.info("关闭VMware Manager API服务")
+
+
 # 创建FastAPI应用实例
 app = FastAPI(
     title="VMware Manager API",
     description="VMware vSphere平台管理工具API",
     version="0.1.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # 配置CORS
@@ -37,20 +98,6 @@ app.add_middleware(
 
 # 注册路由
 app.include_router(api_router, prefix="/api/v1")
-
-
-@app.on_event("startup")
-async def startup_event():
-    """应用启动事件"""
-    logger.info("启动VMware Manager API服务")
-    logger.info(f"服务运行在: http://0.0.0.0:{settings.PORT}")
-    logger.info(f"API文档: http://0.0.0.0:{settings.PORT}/docs")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """应用关闭事件"""
-    logger.info("关闭VMware Manager API服务")
 
 
 @app.get("/health")

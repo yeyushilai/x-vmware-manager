@@ -67,6 +67,9 @@ python main.py
 
 - **Swagger UI**：`http://localhost:8000/docs`
 - **ReDoc**：`http://localhost:8000/redoc`
+- **Swagger文件**：服务启动时会自动生成在 `swagger/` 目录下
+  - `swagger/swagger.json` - JSON格式的Swagger文档
+  - `swagger/swagger.yaml` - YAML格式的Swagger文档
 
 ## API接口列表
 
@@ -114,6 +117,9 @@ vmware-manager/
 │   ├── tools/                # VMware工具
 │   ├── __init__.py           # VMware类
 │   └── interface.py          # VMware接口
+├── swagger/                  # Swagger文档目录
+│   ├── swagger.json          # JSON格式的Swagger文档
+│   └── swagger.yaml          # YAML格式的Swagger文档
 ├── main.py                   # 应用入口
 ├── pyproject.toml            # 项目配置
 └── README.md                 # 项目文档
