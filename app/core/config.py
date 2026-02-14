@@ -5,7 +5,7 @@
 """
 
 import os
-from typing import Dict, Final
+from typing import Final
 
 
 class Settings:
@@ -22,11 +22,11 @@ class Settings:
     VMWARE_PASSWORD: Final[str] = os.environ.get('VMWARE_PASSWORD', '')
     
     @classmethod
-    def get_vmware_config(cls) -> Dict[str, str]:
+    def get_vmware_config(cls) -> dict[str, str]:
         """获取VMware连接配置
         
         Returns:
-            Dict[str, str]: VMware连接配置字典
+            dict[str, str]: VMware连接配置字典
         """
         return {
             'host': cls.VMWARE_HOST,

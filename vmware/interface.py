@@ -2,7 +2,7 @@
 
 import ssl
 import time
-from typing import Dict, Any, List, Optional, Generator
+from typing import Any, Optional
 
 from enum import Enum
 
@@ -26,8 +26,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
 class VMwareVSphereInterface(object):
     """ VMware vSphere接口类 """
 
-    def __init__(self, account: Dict[str, Any]) -> None:
-        self.account: Dict[str, Any] = account
+    def __init__(self, account: dict[str, Any]) -> None:
+        self.account: dict[str, Any] = account
         self.account["timeout"] = 200
         self._si: Optional[Any] = None
         self._content: Optional[Any] = None
@@ -53,26 +53,26 @@ class VMwareVSphereInterface(object):
         return self.content.rootFolder
 
     @property
-    def datacenters(self) -> List[Any]:
+    def datacenters(self) -> list[Any]:
         return pchelper.get_all_obj(self.content, [vim.Datacenter])
 
     @property
-    def clusters(self) -> List[Any]:
+    def clusters(self) -> list[Any]:
         return pchelper.get_all_obj(self.content, [vim.ClusterComputeResource])
 
     @property
-    def vms(self) -> List[Any]:
+    def vms(self) -> list[Any]:
         return pchelper.get_all_obj(self.content, [vim.VirtualMachine])
 
     @property
-    def folders(self) -> List[Any]:
+    def folders(self) -> list[Any]:
         return pchelper.get_all_obj(self.content, [vim.Folder])
 
     def get_vms_view(self) -> Any:
         """获取平台中所有的虚拟机"""
         return pchelper.get_container_view(self.si, [vim.VirtualMachine])
 
-    def get_vms_properties(self, vm_properties: Optional[List[str]] = None) -> List[Dict[str, Any]]:
+    def get_vms_properties(self, vm_properties: Optional[list[str]] = None) -> list[dict[str, Any]]:
         return pchelper.collect_properties(
             self.si,
             view_ref=self.get_vms_view(),
@@ -104,7 +104,7 @@ class VMwareVSphereInterface(object):
                     vm_folder_obj = datacenter_obj
                     break
 
-        folder_dict: Dict[Any, Any] = pchelper.get_all_obj(self.content, [vim.Folder], vm_folder_obj)
+        folder_dict: dict[Any, Any] = pchelper.get_all_obj(self.content, [vim.Folder], vm_folder_obj)
         for folder_obj in folder_dict.keys():
             if folder_obj._moId == folder_moid:
                 return folder_obj
@@ -135,7 +135,7 @@ class VMwareVSphereInterface(object):
         vm_obj: Optional[Any] = self.content.searchIndex.FindByUuid(None, vm_uuid, True)
         return vm_obj.AcquireTicket('webmks')
 
-    def update_vm_by_uuid(self, vm_uuid: str, vm_info: Dict[str, Any]) -> Optional[Any]:
+    def update_vm_by_uuid(self, vm_uuid: str, vm_info: dict[str, Any]) -> Optional[Any]:
         """通过UUID修改单个虚拟机对象"""
         vm_obj: Optional[Any] = self.content.searchIndex.FindByUuid(None, vm_uuid, True)
         vm_note: Optional[str] = vm_info.get("vm_note")
@@ -176,13 +176,13 @@ class VMwareVSphereInterface(object):
             time.sleep(10)
         return None
 
-    def get_cluster_vms(self, cluster_name: str, vm_properties: Optional[List[str]] = None) -> List[Dict[str, Any]]:
+    def get_cluster_vms(self, cluster_name: str, vm_properties: Optional[list[str]] = None) -> list[dict[str, Any]]:
         """获取平台中某一个集群里所有的虚拟机"""
         cluster_obj: Optional[Any] = self.get_cluster_by_name(cluster_name)
 
         vms_view_ref: Any = pchelper.get_container_view(
             self.si, obj_type=[vim.VirtualMachine], container=cluster_obj)
-        vms_data: List[Dict[str, Any]] = pchelper.collect_properties(
+        vms_data: list[dict[str, Any]] = pchelper.collect_properties(
             self.si,
             view_ref=vms_view_ref,
             obj_type=vim.VirtualMachine,
@@ -193,8 +193,8 @@ class VMwareVSphereInterface(object):
             include_mors=True)
         return vms_data
 
-    def _init_vm_properties(self) -> List[str]:
-        vm_properties: List[str] = [
+    def _init_vm_properties(self) -> list[str]:
+        vm_properties: list[str] = [
             "parent",
             "guest.ipAddress",
             "guest.toolsStatus",
@@ -218,14 +218,14 @@ class VMwareVSphereInterface(object):
             vm_properties.append("config.createDate")
         return vm_properties
 
-    def layout_dict_vm_data(self, vm_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def layout_dict_vm_data(self, vm_data: dict[str, Any]) -> Optional[dict[str, Any]]:
         vm_obj: Any = vm_data["obj"]
 
         # todo: 着力于优化此项目，提升速度
         if isinstance(vm_obj, vim.VirtualApp):
             return None
 
-        layout_data: Dict[str, Any] = dict()
+        layout_data: dict[str, Any] = dict()
 
         # 基本信息
         layout_data["uuid"] = vm_data["summary.config.uuid"]
@@ -260,10 +260,10 @@ class VMwareVSphereInterface(object):
 
         # 磁盘
         if vm_data.get("config.hardware.device"):
-            disk_list: List[Dict[str, Any]] = list()
+            disk_list: list[dict[str, Any]] = list()
             for device in vm_data["config.hardware.device"]:
                 if isinstance(device, vim.vm.device.VirtualDisk):
-                    temp_disk_dict: Dict[str, Any] = dict()
+                    temp_disk_dict: dict[str, Any] = dict()
                     label: str = device.deviceInfo.label
                     size: Any = device.capacityInKB
                     if str(size).endswith("L"):
@@ -280,11 +280,11 @@ class VMwareVSphereInterface(object):
 
         return layout_data
 
-    def layout_obj_vm_data(self, vm_obj: Any) -> Optional[Dict[str, Any]]:
+    def layout_obj_vm_data(self, vm_obj: Any) -> Optional[dict[str, Any]]:
         if isinstance(vm_obj, vim.VirtualApp):
             return None
 
-        layout_data: Dict[str, Any] = dict()
+        layout_data: dict[str, Any] = dict()
 
         # 基本信息
         layout_data["uuid"] = vm_obj.summary.config.uuid
@@ -311,22 +311,22 @@ class VMwareVSphereInterface(object):
         layout_data["memory"] = vm_obj.config.hardware.memoryMB
 
         # 磁盘、网卡
-        total_nic_dict: Dict[int, Dict[str, Any]] = dict()
+        total_nic_dict: dict[int, dict[str, Any]] = dict()
         for nic in vm_obj.guest.net:
             # todo: 目前感觉必须安装了Vmware Tools才有值，否则为空，待后续继续验证
             key: int = nic.deviceConfigId
-            ip_list: List[str] = list()
+            ip_list: list[str] = list()
             if nic.ipAddress:
                 for ip in nic.ipAddress:
                     ip_list.append(ip)
             total_nic_dict[key] = dict(ip_list=ip_list)  # 网卡网络信息
 
-        disk_list: List[Dict[str, Any]] = list()
-        nic_list: List[Dict[str, Any]] = list()
+        disk_list: list[dict[str, Any]] = list()
+        nic_list: list[dict[str, Any]] = list()
         for device in vm_obj.config.hardware.device:
             # 磁盘
             if isinstance(device, vim.vm.device.VirtualDisk):
-                temp_disk_dict: Dict[str, Any] = dict()
+                temp_disk_dict: dict[str, Any] = dict()
                 temp_disk_dict["size"] = int(device.capacityInKB) / 1024 / 1024  # 容量，单位GB
                 temp_disk_dict["name"] = device.deviceInfo.label    # eg: Hard disk 1
                 disk_list.append(temp_disk_dict)
@@ -334,7 +334,7 @@ class VMwareVSphereInterface(object):
             # 网卡
             if isinstance(device, (vim.vm.device.VirtualVmxnet3,
                                    vim.vm.device.VirtualE1000e)):
-                temp_nic_dict: Dict[str, Any] = dict()
+                temp_nic_dict: dict[str, Any] = dict()
                 temp_nic_dict["name"] = device.deviceInfo.label
                 temp_nic_dict["mac"] = device.macAddress
                 temp_nic_dict["status"] = device.connectable.status  # eg: ok
@@ -351,9 +351,9 @@ class VMwareVSphereInterface(object):
         layout_data["nic"] = nic_list
 
         # 存储
-        datastore_list: List[Dict[str, Any]] = []
+        datastore_list: list[dict[str, Any]] = []
         for datastore_obj in vm_obj.datastore:
-            datastore_info: Dict[str, Any] = dict()
+            datastore_info: dict[str, Any] = dict()
             datastore_info["name"] = datastore_obj.name
             datastore_info["type"] = datastore_obj.summary.type
 
@@ -368,9 +368,9 @@ class VMwareVSphereInterface(object):
         layout_data["datastore"] = datastore_list
 
         # 网络
-        network_list: List[Dict[str, str]] = []
+        network_list: list[dict[str, str]] = []
         for network_obj in vm_obj.network:
-            network_info: Dict[str, str] = dict()
+            network_info: dict[str, str] = dict()
             network_info["name"] = network_obj.name
             network_list.append(network_info)
         layout_data["network"] = network_list
@@ -434,13 +434,13 @@ class VMwareVSphereInterface(object):
         self,
         start_time: Any,
         end_time: Any,
-        counterIds: List[int],
+        counterIds: list[int],
         instance: str,
         entity: Any,
     ) -> Optional[Any]:
 
         perfManager: Any = self.content.perfManager
-        metricIds: List[Any] = [vim.PerformanceManager.MetricId(counterId=counterid,
+        metricIds: list[Any] = [vim.PerformanceManager.MetricId(counterId=counterid,
                                                      instance=instance) for counterid in counterIds]
         query: Any = vim.PerformanceManager.QuerySpec(intervalId=20,
                                                  entity=entity,
@@ -448,7 +448,7 @@ class VMwareVSphereInterface(object):
                                                  startTime=start_time,
                                                  endTime=end_time)
         try:
-            perfResults: List[Any] = perfManager.QueryPerf(querySpec=[query])
+            perfResults: list[Any] = perfManager.QueryPerf(querySpec=[query])
         except BaseException as e:
             print("monitor api query error [%s]" % e)
             return None
@@ -458,9 +458,9 @@ class VMwareVSphereInterface(object):
                 return perfResults
             return False
     
-    def get_counter_dict(self) -> Dict[str, int]:
-        perfList: List[Any] = self.content.perfManager.perfCounter
-        counter_dict: Dict[str, int] = {
+    def get_counter_dict(self) -> dict[str, int]:
+        perfList: list[Any] = self.content.perfManager.perfCounter
+        counter_dict: dict[str, int] = {
             "{}.{}.{}".format(counter.groupInfo.key, counter.nameInfo.key,
                               counter.rollupType): counter.key
             for counter in perfList

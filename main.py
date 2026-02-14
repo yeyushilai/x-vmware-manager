@@ -9,7 +9,7 @@ import os
 import sys
 import json
 import yaml
-from typing import Dict, Any, AsyncIterator
+from typing import Any, AsyncIterator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,7 +33,7 @@ def generate_swagger_spec(app_instance: FastAPI) -> None:
     """
     try:
         # 获取OpenAPI规范
-        openapi_spec: Dict[str, Any] = app_instance.openapi()
+        openapi_spec: dict[str, Any] = app_instance.openapi()
         
         # 确保输出目录存在
         output_dir: str = 'swagger'
@@ -102,7 +102,7 @@ app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get("/health")
-async def health_check() -> Dict[str, str]:
+async def health_check() -> dict[str, str]:
     """健康检查接口"""
     return {
         "status": "healthy",

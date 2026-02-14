@@ -5,7 +5,6 @@
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import Dict, Any
 
 from app.core.logger import logger
 from app.services.vmware_service import get_vmware_client
@@ -33,7 +32,7 @@ async def list_folders(dc_id: str) -> ApiResponse[FolderList]:
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
@@ -78,7 +77,7 @@ async def get_folder(dc_id: str, folder_id: str) -> ApiResponse[FolderInfo]:
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,

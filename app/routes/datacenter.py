@@ -5,7 +5,6 @@
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import Dict, Any
 
 from app.core.config import settings
 from app.core.logger import logger

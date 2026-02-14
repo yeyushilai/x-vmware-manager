@@ -4,7 +4,7 @@
 VMware服务管理
 """
 
-from typing import Optional, Dict, Final
+from typing import Optional, Final
 from vmware import VMwareVSphere
 from app.core.config import settings
 from app.core.logger import logger
@@ -25,7 +25,7 @@ def get_vmware_client() -> Optional[VMwareVSphere]:
             logger.error("VMware配置不完整")
             return None
         
-        account: Dict[str, str] = settings.get_vmware_config()
+        account: dict[str, str] = settings.get_vmware_config()
         vmware_client = VMwareVSphere(account)
         
         if not vmware_client.is_connected():

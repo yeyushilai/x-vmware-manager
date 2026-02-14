@@ -20,7 +20,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
+                  "$ref": "#/components/schemas/ApiResponse_list_dict_str__Any___"
                 }
               }
             }
@@ -53,7 +53,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__Any__"
                 }
               }
             }
@@ -96,7 +96,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
+                  "$ref": "#/components/schemas/ApiResponse_list_dict_str__Any___"
                 }
               }
             }
@@ -148,7 +148,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__Any__"
                 }
               }
             }
@@ -191,7 +191,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
+                  "$ref": "#/components/schemas/ApiResponse_list_dict_str__Any___"
                 }
               }
             }
@@ -243,7 +243,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__Any__"
                 }
               }
             }
@@ -295,7 +295,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_List_Dict_str__Any___"
+                  "$ref": "#/components/schemas/ApiResponse_list_dict_str__Any___"
                 }
               }
             }
@@ -347,7 +347,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__Any__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__Any__"
                 }
               }
             }
@@ -371,7 +371,7 @@
           "vm"
         ],
         "summary": "Poweron Vm",
-        "description": "启动虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
+        "description": "启动虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[dict[str, str]]: 操作响应",
         "operationId": "poweron_vm_api_v1_dcs__dc_id__vms__vm_id__poweron_post",
         "parameters": [
           {
@@ -399,7 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__str__"
                 }
               }
             }
@@ -423,7 +423,7 @@
           "vm"
         ],
         "summary": "Poweroff Vm",
-        "description": "关闭虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
+        "description": "关闭虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[dict[str, str]]: 操作响应",
         "operationId": "poweroff_vm_api_v1_dcs__dc_id__vms__vm_id__poweroff_post",
         "parameters": [
           {
@@ -451,7 +451,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__str__"
                 }
               }
             }
@@ -475,7 +475,7 @@
           "vm"
         ],
         "summary": "Reboot Vm",
-        "description": "重启虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
+        "description": "重启虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[dict[str, str]]: 操作响应",
         "operationId": "reboot_vm_api_v1_dcs__dc_id__vms__vm_id__reboot_post",
         "parameters": [
           {
@@ -503,7 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__str__"
                 }
               }
             }
@@ -527,7 +527,7 @@
           "vm"
         ],
         "summary": "Suspend Vm",
-        "description": "挂起虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[Dict[str, str]]: 操作响应",
+        "description": "挂起虚拟机\n\nArgs:\n    dc_id: 数据中心ID\n    vm_id: 虚拟机ID\n\nReturns:\n    ApiResponse[dict[str, str]]: 操作响应",
         "operationId": "suspend_vm_api_v1_dcs__dc_id__vms__vm_id__suspend_post",
         "parameters": [
           {
@@ -555,7 +555,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse_Dict_str__str__"
+                  "$ref": "#/components/schemas/ApiResponse_dict_str__str__"
                 }
               }
             }
@@ -599,7 +599,7 @@
   },
   "components": {
     "schemas": {
-      "ApiResponse_Dict_str__Any__": {
+      "ApiResponse_dict_str__Any__": {
         "properties": {
           "code": {
             "type": "integer",
@@ -630,9 +630,9 @@
           "code",
           "message"
         ],
-        "title": "ApiResponse[Dict[str, Any]]"
+        "title": "ApiResponse[dict[str, Any]]"
       },
-      "ApiResponse_Dict_str__str__": {
+      "ApiResponse_dict_str__str__": {
         "properties": {
           "code": {
             "type": "integer",
@@ -665,9 +665,9 @@
           "code",
           "message"
         ],
-        "title": "ApiResponse[Dict[str, str]]"
+        "title": "ApiResponse[dict[str, str]]"
       },
-      "ApiResponse_List_Dict_str__Any___": {
+      "ApiResponse_list_dict_str__Any___": {
         "properties": {
           "code": {
             "type": "integer",
@@ -701,7 +701,7 @@
           "code",
           "message"
         ],
-        "title": "ApiResponse[List[Dict[str, Any]]]"
+        "title": "ApiResponse[list[dict[str, Any]]]"
       },
       "HTTPValidationError": {
         "properties": {

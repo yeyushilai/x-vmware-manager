@@ -5,7 +5,7 @@
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import Dict, Any, Optional
+from typing import Any, Optional
 
 from app.core.logger import logger
 from app.services.vmware_service import get_vmware_client
@@ -35,7 +35,7 @@ async def list_cluster_vms(dc_id: str, cluster_id: str) -> ApiResponse[VmList]:
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
@@ -93,7 +93,7 @@ async def get_vm(dc_id: str, vm_id: str) -> ApiResponse[VmInfo]:
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
@@ -124,8 +124,8 @@ async def get_vm(dc_id: str, vm_id: str) -> ApiResponse[VmInfo]:
         )
 
 
-@router.post("/{dc_id}/vms/{vm_id}/poweron", response_model=ApiResponse[Dict[str, str]])
-async def poweron_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
+@router.post("/{dc_id}/vms/{vm_id}/poweron", response_model=ApiResponse[dict[str, str]])
+async def poweron_vm(dc_id: str, vm_id: str) -> ApiResponse[dict[str, str]]:
     """启动虚拟机
     
     Args:
@@ -133,13 +133,13 @@ async def poweron_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
         vm_id: 虚拟机ID
     
     Returns:
-        ApiResponse[Dict[str, str]]: 操作响应
+        ApiResponse[dict[str, str]]: 操作响应
     """
     return await operate_vm(dc_id, vm_id, PlatformVmOperationType.POWERON.value)
 
 
-@router.post("/{dc_id}/vms/{vm_id}/poweroff", response_model=ApiResponse[Dict[str, str]])
-async def poweroff_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
+@router.post("/{dc_id}/vms/{vm_id}/poweroff", response_model=ApiResponse[dict[str, str]])
+async def poweroff_vm(dc_id: str, vm_id: str) -> ApiResponse[dict[str, str]]:
     """关闭虚拟机
     
     Args:
@@ -147,13 +147,13 @@ async def poweroff_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
         vm_id: 虚拟机ID
     
     Returns:
-        ApiResponse[Dict[str, str]]: 操作响应
+        ApiResponse[dict[str, str]]: 操作响应
     """
     return await operate_vm(dc_id, vm_id, PlatformVmOperationType.POWEROFF.value)
 
 
-@router.post("/{dc_id}/vms/{vm_id}/reboot", response_model=ApiResponse[Dict[str, str]])
-async def reboot_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
+@router.post("/{dc_id}/vms/{vm_id}/reboot", response_model=ApiResponse[dict[str, str]])
+async def reboot_vm(dc_id: str, vm_id: str) -> ApiResponse[dict[str, str]]:
     """重启虚拟机
     
     Args:
@@ -161,13 +161,13 @@ async def reboot_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
         vm_id: 虚拟机ID
     
     Returns:
-        ApiResponse[Dict[str, str]]: 操作响应
+        ApiResponse[dict[str, str]]: 操作响应
     """
     return await operate_vm(dc_id, vm_id, PlatformVmOperationType.REBOOT.value)
 
 
-@router.post("/{dc_id}/vms/{vm_id}/suspend", response_model=ApiResponse[Dict[str, str]])
-async def suspend_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
+@router.post("/{dc_id}/vms/{vm_id}/suspend", response_model=ApiResponse[dict[str, str]])
+async def suspend_vm(dc_id: str, vm_id: str) -> ApiResponse[dict[str, str]]:
     """挂起虚拟机
     
     Args:
@@ -175,12 +175,12 @@ async def suspend_vm(dc_id: str, vm_id: str) -> ApiResponse[Dict[str, str]]:
         vm_id: 虚拟机ID
     
     Returns:
-        ApiResponse[Dict[str, str]]: 操作响应
+        ApiResponse[dict[str, str]]: 操作响应
     """
     return await operate_vm(dc_id, vm_id, PlatformVmOperationType.SUSPEND.value)
 
 
-async def operate_vm(dc_id: str, vm_id: str, operation: str) -> ApiResponse[Dict[str, str]]:
+async def operate_vm(dc_id: str, vm_id: str, operation: str) -> ApiResponse[dict[str, str]]:
     """操作虚拟机
     
     Args:
@@ -189,7 +189,7 @@ async def operate_vm(dc_id: str, vm_id: str, operation: str) -> ApiResponse[Dict
         operation: 操作类型
     
     Returns:
-        ApiResponse[Dict[str, str]]: 操作响应
+        ApiResponse[dict[str, str]]: 操作响应
     """
     try:
         client = get_vmware_client()
@@ -200,7 +200,7 @@ async def operate_vm(dc_id: str, vm_id: str, operation: str) -> ApiResponse[Dict
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: Dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
