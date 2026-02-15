@@ -42,7 +42,35 @@ pip install uv
 uv sync
 ```
 
-### 3. Configure Environment Variables
+### 3. Configuration
+
+#### Option 1: Using Configuration File (Recommended)
+
+1. Copy the example configuration file:
+```bash
+copy config.yaml.example config.yaml
+```
+
+2. Edit `config.yaml` and fill in your actual configuration:
+```yaml
+server:
+  debug: true
+  port: 8000
+
+vmware:
+  host: "your-vcenter-host"
+  port: "443"
+  username: "your-username"
+  password: "your-password"
+
+logging:
+  level: "INFO"
+  file_path: "logs/app.log"
+  rotation: "1 day"
+  retention: "7 days"
+```
+
+#### Option 2: Using Environment Variables
 
 ```bash
 # VMware vSphere connection configuration
@@ -54,6 +82,8 @@ set VMWARE_PASSWORD=your-password
 set DEBUG=True
 set PORT=8000
 ```
+
+> **Note**: Configuration priority: Environment Variables > Configuration File > Default Values
 
 ### 4. Start Service
 

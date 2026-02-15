@@ -42,7 +42,35 @@ pip install uv
 uv sync
 ```
 
-### 3. 配置环境变量
+### 3. 配置
+
+#### 方式一：使用配置文件（推荐）
+
+1. 复制示例配置文件：
+```bash
+copy config.yaml.example config.yaml
+```
+
+2. 编辑 `config.yaml` 文件，填入你的实际配置：
+```yaml
+server:
+  debug: true
+  port: 8000
+
+vmware:
+  host: "your-vcenter-host"
+  port: "443"
+  username: "your-username"
+  password: "your-password"
+
+logging:
+  level: "INFO"
+  file_path: "logs/app.log"
+  rotation: "1 day"
+  retention: "7 days"
+```
+
+#### 方式二：使用环境变量
 
 ```bash
 # VMware vSphere连接配置
@@ -54,6 +82,8 @@ set VMWARE_PASSWORD=your-password
 set DEBUG=True
 set PORT=8000
 ```
+
+> **注意**：配置优先级：环境变量 > 配置文件 > 默认值
 
 ### 4. 启动服务
 

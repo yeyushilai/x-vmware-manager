@@ -14,9 +14,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# 添加项目根目录到Python路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
 from app.routes import api_router
 from app.core.config import settings
 from app.core.logger import logger
