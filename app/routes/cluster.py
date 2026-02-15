@@ -33,7 +33,7 @@ async def list_clusters(dc_id: str) -> ApiResponse[ClusterList]:
             )
         
         # 先获取数据中心详情，确认存在
-        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,
@@ -78,7 +78,7 @@ async def get_cluster(dc_id: str, cluster_id: str) -> ApiResponse[ClusterInfo]:
             )
         
         # 先获取数据中心详情
-        datacenter: dict[str, Any] = client.detail_datacenter(dc_id)
+        datacenter: dict[str, any] = client.detail_datacenter(dc_id)
         if not datacenter:
             raise HTTPException(
                 status_code=404,

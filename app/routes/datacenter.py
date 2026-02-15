@@ -6,7 +6,6 @@
 
 from fastapi import APIRouter, HTTPException
 
-from app.core.config import settings
 from app.core.logger import logger
 from app.services.vmware_service import get_vmware_client
 from app.schemas import ApiResponse, DatacenterList, DatacenterInfo
